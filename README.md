@@ -45,3 +45,19 @@ cmake -G Ninja .. \
   -DLLVM_ENABLE_LLD=ON
 cmake --build . --target check-tutorial
 ```
+
+The last line runs the test suite.
+
+## Additional CMake commands
+
+List all targets
+
+```
+cmake --build . --target help
+```
+
+Run tblgen for one target (e.g., `MLIRTutorialDialectIncGen`)
+
+```
+cmake --build . --target MLIRTutorialDialectIncGen
+```
