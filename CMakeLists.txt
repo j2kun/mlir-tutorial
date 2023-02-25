@@ -27,4 +27,5 @@ include_directories(${PROJECT_BINARY_DIR}/include)
 link_directories(${LLVM_BUILD_LIBRARY_DIR})
 add_definitions(${LLVM_DEFINITIONS})
 
+add_subdirectory(include)
 add_subdirectory(test)
