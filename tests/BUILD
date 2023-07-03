@@ -9,6 +9,7 @@ filegroup(
         "@llvm-project//llvm:FileCheck",
         "@llvm-project//llvm:count",
         "@llvm-project//llvm:not",
+        "@llvm-project//mlir:mlir-cpu-runner",
         "@llvm-project//mlir:mlir-opt",
     ],
 )
