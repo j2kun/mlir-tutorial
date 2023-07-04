@@ -55,3 +55,22 @@ maybe(
         "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.0.7.zip",
     ],
 )
+
+# compile_commands extracts the relevant compile data from bazel into
+# `compile_commands.json` so that clangd, clang-tidy, etc., can use it.
+# Whenever a build file changes, you must re-run
+#
+#   bazel run @hedron_compile_commands//:refresh_all
+#
+# to ingest new data into these tools.
+#
+# See the project repo for more details and configuration options
+# https://github.com/hedronvision/bazel-compile-commands-extractor
+http_archive(
+    name = "hedron_compile_commands",
+    url = "https://github.com/hedronvision/bazel-compile-commands-extractor/archive/3dddf205a1f5cde20faf2444c1757abe0564ff4c.tar.gz",
+    strip_prefix = "bazel-compile-commands-extractor-3dddf205a1f5cde20faf2444c1757abe0564ff4c",
+    sha256 = "3cd0e49f0f4a6d406c1d74b53b7616f5e24f5fd319eafc1bf8eee6e14124d115",
+)
+load("@hedron_compile_commands//:workspace_setup.bzl", "hedron_compile_commands_setup")
+hedron_compile_commands_setup()
