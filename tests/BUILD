@@ -6,6 +6,7 @@ filegroup(
     testonly = True,
     data = [
         "//tests:lit.cfg.py",
+        "//tools:tutorial-opt",
         "@llvm-project//llvm:FileCheck",
         "@llvm-project//llvm:count",
         "@llvm-project//llvm:not",
