@@ -10,12 +10,13 @@ using mlir::affine::AffineForOp;
 using mlir::affine::loopUnrollFull;
 
 void AffineFullUnrollPass::runOnOperation() {
-  getOperation().walk([&](AffineForOp op) {
-    if (failed(loopUnrollFull(op))) {
-      op.emitError("unrolling failed");
-      signalPassFailure();
-    }
-  });
+  AffineForOp op = getOperation();
+  op.emitError() << "converted op successfully";
+  auto result = loopUnrollFull(op);
+  if (failed(result)) {
+    op.emitError() << "failed";
+    signalPassFailure();
+  }
 }
 
 } // namespace tutorial
