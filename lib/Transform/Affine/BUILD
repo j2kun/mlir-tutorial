@@ -10,6 +10,7 @@ cc_library(
     hdrs = ["AffineFullUnroll.h"],
     deps = [
         "@llvm-project//mlir:AffineDialect",
+        "@llvm-project//mlir:AffineUtils",
         "@llvm-project//mlir:FuncDialect",
         "@llvm-project//mlir:Pass",
         "@llvm-project//mlir:Transforms",
