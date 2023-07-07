@@ -9,6 +9,7 @@ int main(int argc, char **argv) {
   mlir::registerAllDialects(registry);
 
   mlir::PassRegistration<mlir::tutorial::AffineFullUnrollPass>();
+  mlir::PassRegistration<mlir::tutorial::AffineFullUnrollPassAsPatternRewrite>();
 
   return mlir::asMainReturnCode(
       mlir::MlirOptMain(argc, argv, "Tutorial Pass Driver", registry));
