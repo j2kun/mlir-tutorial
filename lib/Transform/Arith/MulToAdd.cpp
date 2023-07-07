@@ -20,6 +20,31 @@ struct PowerOfTwoExpand :
 
   LogicalResult matchAndRewrite(MulIOp op,
                                 PatternRewriter &rewriter) const override {
+    Value lhs = op.getOperand(0);
+
+    // canonicalization patterns ensure the constant is on the right, if there is a constant
+    // See https://mlir.llvm.org/docs/Canonicalization/#globally-applied-rules
+    Value rhs = op.getOperand(1);
+    auto rhsDefiningOp = rhs.getDefiningOp<arith::ConstantIntOp>();
+    if (!rhsDefiningOp) {
+      return failure();
+    }
+
+    int64_t value = rhsDefiningOp.value();
+    bool is_power_of_two = (value & (value - 1)) == 0;
+
+    if (!is_power_of_two) {
+      return failure();
+    }
+
+    ConstantOp newConstant = rewriter.create<ConstantOp>(
+        rhsDefiningOp.getLoc(), rewriter.getIntegerAttr(rhs.getType(), value / 2));
+    MulIOp newMul = rewriter.create<MulIOp>(op.getLoc(), lhs, newConstant);
+    AddIOp newAdd = rewriter.create<AddIOp>(op.getLoc(), newMul, newMul);
+
+    rewriter.replaceOp(op, {newAdd});
+    rewriter.eraseOp(rhsDefiningOp);
+
     return success();
   }
 };
