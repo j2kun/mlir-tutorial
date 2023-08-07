@@ -11,8 +11,8 @@ cc_binary(
     srcs = ["tutorial-opt.cpp"],
     includes = ["include"],
     deps = [
-        "//lib/Transform/Affine:AffineFullUnroll",
-        "//lib/Transform/Arith:MulToAdd",
+        "//lib/Transform/Affine:Passes",
+        "//lib/Transform/Arith:Passes",
         "@llvm-project//mlir:AllPassesAndDialects",
         "@llvm-project//mlir:MlirOptLib",
         "@llvm-project//mlir:Pass",
