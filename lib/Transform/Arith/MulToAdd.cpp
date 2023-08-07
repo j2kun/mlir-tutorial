@@ -7,14 +7,16 @@
 namespace mlir {
 namespace tutorial {
 
+#define GEN_PASS_DEF_MULTOADD
+#include "lib/Transform/Arith/Passes.h.inc"
+
 using arith::AddIOp;
 using arith::ConstantOp;
 using arith::MulIOp;
 
 // Replace y = C*x with y = C/2*x + C/2*x, when C is a power of 2, otherwise do
 // nothing.
-struct PowerOfTwoExpand :
-  public OpRewritePattern<MulIOp> {
+struct PowerOfTwoExpand : public OpRewritePattern<MulIOp> {
   PowerOfTwoExpand(mlir::MLIRContext *context)
       : OpRewritePattern<MulIOp>(context, /*benefit=*/2) {}
 
@@ -22,8 +24,9 @@ struct PowerOfTwoExpand :
                                 PatternRewriter &rewriter) const override {
     Value lhs = op.getOperand(0);
 
-    // canonicalization patterns ensure the constant is on the right, if there is a constant
-    // See https://mlir.llvm.org/docs/Canonicalization/#globally-applied-rules
+    // canonicalization patterns ensure the constant is on the right, if there
+    // is a constant See
+    // https://mlir.llvm.org/docs/Canonicalization/#globally-applied-rules
     Value rhs = op.getOperand(1);
     auto rhsDefiningOp = rhs.getDefiningOp<arith::ConstantIntOp>();
     if (!rhsDefiningOp) {
@@ -38,7 +41,8 @@ struct PowerOfTwoExpand :
     }
 
     ConstantOp newConstant = rewriter.create<ConstantOp>(
-        rhsDefiningOp.getLoc(), rewriter.getIntegerAttr(rhs.getType(), value / 2));
+        rhsDefiningOp.getLoc(),
+        rewriter.getIntegerAttr(rhs.getType(), value / 2));
     MulIOp newMul = rewriter.create<MulIOp>(op.getLoc(), lhs, newConstant);
     AddIOp newAdd = rewriter.create<AddIOp>(op.getLoc(), newMul, newMul);
 
@@ -50,8 +54,7 @@ struct PowerOfTwoExpand :
 };
 
 // Replace y = 9*x with y = 8*x + x
-struct PeelFromMul :
-  public OpRewritePattern<MulIOp> {
+struct PeelFromMul : public OpRewritePattern<MulIOp> {
   PeelFromMul(mlir::MLIRContext *context)
       : OpRewritePattern<MulIOp>(context, /*benefit=*/1) {}
 
@@ -71,7 +74,8 @@ struct PeelFromMul :
     // it has higher benefit.
 
     ConstantOp newConstant = rewriter.create<ConstantOp>(
-        rhsDefiningOp.getLoc(), rewriter.getIntegerAttr(rhs.getType(), value - 1));
+        rhsDefiningOp.getLoc(),
+        rewriter.getIntegerAttr(rhs.getType(), value - 1));
     MulIOp newMul = rewriter.create<MulIOp>(op.getLoc(), lhs, newConstant);
     AddIOp newAdd = rewriter.create<AddIOp>(op.getLoc(), newMul, lhs);
 
@@ -82,12 +86,16 @@ struct PeelFromMul :
   }
 };
 
-void MulToAddPass::runOnOperation() {
-  mlir::RewritePatternSet patterns(&getContext());
-  patterns.add<PowerOfTwoExpand>(&getContext());
-  patterns.add<PeelFromMul>(&getContext());
-  (void)applyPatternsAndFoldGreedily(getOperation(), std::move(patterns));
-}
+struct MulToAdd : impl::MulToAddBase<MulToAdd> {
+  using MulToAddBase::MulToAddBase;
+
+  void runOnOperation() {
+    mlir::RewritePatternSet patterns(&getContext());
+    patterns.add<PowerOfTwoExpand>(&getContext());
+    patterns.add<PeelFromMul>(&getContext());
+    (void)applyPatternsAndFoldGreedily(getOperation(), std::move(patterns));
+  }
+};
 
 } // namespace tutorial
 } // namespace mlir
