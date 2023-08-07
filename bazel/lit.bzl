@@ -1,6 +1,7 @@
 """Macros for defining lit tests."""
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
+load("@rules_python//python:py_test.bzl", "py_test")
 
 _DEFAULT_FILE_EXTS = ["mlir"]
 
@@ -44,7 +45,7 @@ def lit_test(name = None, src = None, size = "small", tags = None):
         srcs = [src],
     )
 
-    native.py_test(
+    py_test(
         name = name,
         size = size,
         # -v ensures lit outputs useful info during test failures

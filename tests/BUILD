@@ -12,6 +12,7 @@ filegroup(
         "@llvm-project//llvm:not",
         "@llvm-project//mlir:mlir-cpu-runner",
         "@llvm-project//mlir:mlir-opt",
+        "@mlir_tutorial_pip_deps_lit//:pkg",
     ],
 )
 
