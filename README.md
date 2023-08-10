@@ -1,4 +1,4 @@
-# MLIR Tutorial
+# MLIR For Beginners
 
 This is the code repository for a series of articles
 on the MLIR framework.
