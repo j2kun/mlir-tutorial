@@ -11,6 +11,9 @@ _LLVM_TARGETS = [
     # is included. @j2kun asked the LLVM maintiners for tips on how to fix this,
     # see https://github.com/llvm/llvm-project/issues/63135
     "NVPTX",
+    # Needed for Apple M1 targets, see
+    # https://github.com/j2kun/mlir-tutorial/issues/11
+    "AArch64",
 ]
 
 def setup_llvm(name):
