@@ -1,2 +1,5 @@
 build --action_env=BAZEL_CXXOPTS=-std=c++17
+build --action_env=BAZEL_USE_CPP_ONLY_TOOLCHAIN=1
+build --cxxopt='-std=c++17'
+build --host_cxxopt='-std=c++17'
 test --test_output=all
