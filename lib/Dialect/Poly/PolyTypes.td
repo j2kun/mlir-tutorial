@@ -15,6 +15,9 @@ def Polynomial : Poly_Type<"Polynomial", "poly"> {
   let description = [{
     A type for polynomials with integer coefficients in a single-variable polynomial ring.
   }];
+
+  let parameters = (ins "int":$degreeBound);
+  let assemblyFormat = "`<` $degreeBound `>`";
 }
 
 #endif  // LIB_DIALECT_POLY_POLYTYPES_TD_
