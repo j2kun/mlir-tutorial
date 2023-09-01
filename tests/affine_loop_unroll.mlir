@@ -6,6 +6,7 @@
 
 func.func @test_single_nested_loop(%buffer: memref<4xi32>) -> (i32) {
   %sum_0 = arith.constant 0 : i32
+  // CHECK-LABEL: test_single_nested_loop
   // CHECK-NOT: affine.for
   %sum = affine.for %i = 0 to 4 iter_args(%sum_iter = %sum_0) -> i32 {
     %t = affine.load %buffer[%i] : memref<4xi32>
@@ -17,6 +18,7 @@ func.func @test_single_nested_loop(%buffer: memref<4xi32>) -> (i32) {
 
 func.func @test_doubly_nested_loop(%buffer: memref<4x3xi32>) -> (i32) {
   %sum_0 = arith.constant 0 : i32
+  // CHECK-LABEL: test_doubly_nested_loop
   // CHECK-NOT: affine.for
   %sum = affine.for %i = 0 to 4 iter_args(%sum_iter = %sum_0) -> i32 {
     %sum_nested_0 = arith.constant 0 : i32
