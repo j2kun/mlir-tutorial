@@ -24,7 +24,7 @@ def Poly_MulOp : Poly_BinOp<"mul"> {
   let summary = "Subtraction operation between polynomials.";
 }
 
-def Poly_FromTensorOp : Op<Poly_Dialect, "from_tensor"> {
+def Poly_FromTensorOp : Op<Poly_Dialect, "from_tensor", [Pure]> {
   let summary = "Creates a Polynomial from integer coefficients stored in a tensor.";
   let arguments = (ins TensorOf<[AnyInteger]>:$input);
   let results = (outs Polynomial:$output);
