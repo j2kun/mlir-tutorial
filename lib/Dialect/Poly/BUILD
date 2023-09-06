@@ -82,7 +82,10 @@ gentbl_cc_library(
 
 cc_library(
     name = "Poly",
-    srcs = ["PolyDialect.cpp"],
+    srcs = [
+        "PolyDialect.cpp",
+        "PolyOps.cpp",
+    ],
     hdrs = [
         "PolyDialect.h",
         "PolyOps.h",
