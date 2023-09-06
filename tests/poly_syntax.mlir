@@ -25,6 +25,10 @@ module {
     // CHECK: poly.eval
     %6 = poly.eval %4, %5 : (!poly.poly<10>, i32) -> i32
 
+    %7 = tensor.from_elements %arg0, %arg1 : tensor<2x!poly.poly<10>>
+    // CHECK: poly.add
+    %8 = poly.add %7, %7 : (tensor<2x!poly.poly<10>>, tensor<2x!poly.poly<10>>) -> tensor<2x!poly.poly<10>>
+
     return %4 : !poly.poly<10>
   }
 }
