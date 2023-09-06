@@ -8,12 +8,14 @@ td_library(
     name = "td_files",
     srcs = [
         "PolyDialect.td",
+        "PolyOps.td",
         "PolyTypes.td",
     ],
     includes = ["@heir//include"],
     deps = [
         # the base mlir target for defining operations and dialects in tablegen
         "@llvm-project//mlir:OpBaseTdFiles",
+        "@llvm-project//mlir:BuiltinDialectTdFiles",
         "@llvm-project//mlir:SideEffectInterfacesTdFiles",
     ],
 )

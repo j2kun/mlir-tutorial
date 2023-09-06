@@ -3,6 +3,8 @@
 
 include "PolyDialect.td"
 include "PolyTypes.td"
+include "mlir/IR/BuiltinAttributes.td"
+include "mlir/IR/OpBase.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
 
 // Type constraint for poly binop arguments: polys, vectors of polys, or
@@ -39,6 +41,13 @@ def Poly_EvalOp : Op<Poly_Dialect, "eval"> {
   let arguments = (ins Polynomial:$input, AnyInteger:$point);
   let results = (outs AnyInteger:$output);
   let assemblyFormat = "$input `,` $point attr-dict `:` `(` type($input) `,` type($point) `)` `->` type($output)";
+}
+
+def Poly_ConstantOp : Op<Poly_Dialect, "constant", [Pure, ConstantLike]> {
+  let summary = "Define a constant polynomial via an attribute.";
+  let arguments = (ins AnyIntElementsAttr:$coefficients);
+  let results = (outs Polynomial:$output);
+  let assemblyFormat = "$coefficients attr-dict `:` type($output)";
 }
 
 
