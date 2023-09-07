@@ -35,6 +35,7 @@ def Poly_FromTensorOp : Op<Poly_Dialect, "from_tensor", [Pure]> {
   let arguments = (ins TensorOf<[AnyInteger]>:$input);
   let results = (outs Polynomial:$output);
   let assemblyFormat = "$input attr-dict `:` type($input) `->` type($output)";
+  let hasFolder = 1;
 }
 
 def Poly_EvalOp : Op<Poly_Dialect, "eval"> {

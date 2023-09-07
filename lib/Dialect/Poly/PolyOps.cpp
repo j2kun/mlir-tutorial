@@ -56,6 +56,11 @@ OpFoldResult MulOp::fold(MulOp::FoldAdaptor adaptor) {
       result);
 }
 
+OpFoldResult FromTensorOp::fold(FromTensorOp::FoldAdaptor adaptor) {
+  // Returns null if the cast failed, which corresponds to a failed fold.
+  return dyn_cast<DenseIntElementsAttr>(adaptor.getInput());
+}
+
 } // namespace poly
 } // namespace tutorial
 } // namespace mlir
