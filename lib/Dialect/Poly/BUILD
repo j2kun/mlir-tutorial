@@ -14,6 +14,7 @@ td_library(
     deps = [
         # the base mlir target for defining operations and dialects in tablegen
         "@llvm-project//mlir:OpBaseTdFiles",
+        "@llvm-project//mlir:SideEffectInterfacesTdFiles",
     ],
 )
 
