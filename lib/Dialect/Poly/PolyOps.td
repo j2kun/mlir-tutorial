@@ -24,7 +24,7 @@ def Poly_SubOp : Poly_BinOp<"sub"> {
 }
 
 def Poly_MulOp : Poly_BinOp<"mul"> {
-  let summary = "Subtraction operation between polynomials.";
+  let summary = "Multiplication operation between polynomials.";
 }
 
 def Poly_FromTensorOp : Op<Poly_Dialect, "from_tensor", [Pure]> {
