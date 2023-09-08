@@ -9,6 +9,7 @@ on the [MLIR framework](https://mlir.llvm.org/) for building compilers.
 4. [Using Tablegen for Passes](https://jeremykun.com/2023/08/10/mlir-using-tablegen-for-passes/)
 5. [Defining a New Dialect](https://jeremykun.com/2023/08/21/mlir-defining-a-new-dialect/)
 6. [Using Traits](https://jeremykun.com/2023/09/07/mlir-using-traits/)
-7. Defining Folders and Canonicalizers
-8. Defining Verifiers
-9. Dialect Conversions
+7. [Folders and Constant Propagation](https://jeremykun.com/2023/09/11/mlir-folders/)
+8. Verifiers
+9. Canonicalization with Rewrite Patterns
+10. Dialect Conversion
