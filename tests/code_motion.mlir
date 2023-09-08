@@ -15,8 +15,8 @@ module {
     %ret_val = affine.for %i = 0 to 100 iter_args(%sum_iter = %p0) -> !poly.poly<10> {
       // The poly.mul should be hoisted out of the loop.
       // CHECK-NOT: poly.mul
-      %2 = poly.mul %p0, %p1 : (!poly.poly<10>, !poly.poly<10>) -> !poly.poly<10>
-      %sum_next = poly.add %sum_iter, %2 : (!poly.poly<10>, !poly.poly<10>) -> !poly.poly<10>
+      %2 = poly.mul %p0, %p1 : !poly.poly<10>
+      %sum_next = poly.add %sum_iter, %2 : !poly.poly<10>
       affine.yield %sum_next : !poly.poly<10>
     }
 

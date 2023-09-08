@@ -13,9 +13,9 @@ td_library(
     ],
     includes = ["@heir//include"],
     deps = [
-        # the base mlir target for defining operations and dialects in tablegen
-        "@llvm-project//mlir:OpBaseTdFiles",
         "@llvm-project//mlir:BuiltinDialectTdFiles",
+        "@llvm-project//mlir:InferTypeOpInterfaceTdFiles",
+        "@llvm-project//mlir:OpBaseTdFiles",
         "@llvm-project//mlir:SideEffectInterfacesTdFiles",
     ],
 )
@@ -97,6 +97,7 @@ cc_library(
         ":types_inc_gen",
         "@llvm-project//mlir:Dialect",
         "@llvm-project//mlir:IR",
+        "@llvm-project//mlir:InferTypeOpInterface",
         "@llvm-project//mlir:Support",
     ],
 )

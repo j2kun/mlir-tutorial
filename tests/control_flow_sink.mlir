@@ -12,12 +12,12 @@ func.func @test_simple_sink(%arg0: i1) -> !poly.poly<10> {
   // CHECK: scf.if
   %4 = scf.if %arg0 -> (!poly.poly<10>) {
     // CHECK: poly.from_tensor
-    %2 = poly.mul %p0, %p0 : (!poly.poly<10>, !poly.poly<10>) -> !poly.poly<10>
+    %2 = poly.mul %p0, %p0 : !poly.poly<10>
     scf.yield %2 : !poly.poly<10>
   // CHECK: else
   } else {
     // CHECK: poly.from_tensor
-    %3 = poly.mul %p1, %p1 : (!poly.poly<10>, !poly.poly<10>) -> !poly.poly<10>
+    %3 = poly.mul %p1, %p1 : !poly.poly<10>
     scf.yield %3 : !poly.poly<10>
   }
   return %4 : !poly.poly<10>
