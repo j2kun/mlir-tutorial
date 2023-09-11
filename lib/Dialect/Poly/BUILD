@@ -89,6 +89,7 @@ cc_library(
     hdrs = [
         "PolyDialect.h",
         "PolyOps.h",
+        "PolyTraits.h",
         "PolyTypes.h",
     ],
     deps = [
