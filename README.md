@@ -10,6 +10,6 @@ on the [MLIR framework](https://mlir.llvm.org/) for building compilers.
 5. [Defining a New Dialect](https://jeremykun.com/2023/08/21/mlir-defining-a-new-dialect/)
 6. [Using Traits](https://jeremykun.com/2023/09/07/mlir-using-traits/)
 7. [Folders and Constant Propagation](https://jeremykun.com/2023/09/11/mlir-folders/)
-8. Verifiers
+8. [Verifiers](https://jeremykun.com/2023/09/13/mlir-verifiers/)
 9. Canonicalization with Rewrite Patterns
 10. Dialect Conversion
