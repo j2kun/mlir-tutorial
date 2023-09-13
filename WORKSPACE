@@ -18,6 +18,8 @@ http_archive(
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
+load("@bazel_skylib//lib:versions.bzl", "versions")
+versions.check(minimum_bazel_version = "6.3.2")
 
 # A two-step process for buliding LLVM/MLIR with bazel. First the raw source
 # code is downloaded and imported into this workspace as a git repository,
