@@ -25,6 +25,10 @@ module {
     // CHECK: poly.eval
     %6 = poly.eval %4, %5 : (!poly.poly<10>, i32) -> i32
 
+    %z = complex.constant [1.0, 2.0] : complex<f64>
+    // CHECK: poly.eval
+    %complex_eval = poly.eval %4, %z : (!poly.poly<10>, complex<f64>) -> complex<f64>
+
     %7 = tensor.from_elements %arg0, %arg1 : tensor<2x!poly.poly<10>>
     // CHECK: poly.add
     %8 = poly.add %7, %7 : tensor<2x!poly.poly<10>>
