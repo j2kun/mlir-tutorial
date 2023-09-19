@@ -1,7 +1,6 @@
 #include "lib/Dialect/Poly/PolyOps.h"
 
 #include "mlir/Dialect/CommonFolders.h"
-#include "llvm/Support/Debug.h"
 
 namespace mlir {
 namespace tutorial {
@@ -25,8 +24,7 @@ OpFoldResult MulOp::fold(MulOp::FoldAdaptor adaptor) {
   auto lhs = dyn_cast<DenseIntElementsAttr>(adaptor.getOperands()[0]);
   auto rhs = dyn_cast<DenseIntElementsAttr>(adaptor.getOperands()[1]);
 
-  if (!lhs || !rhs)
-    return nullptr;
+  if (!lhs || !rhs) return nullptr;
 
   auto degree = getResult().getType().cast<PolynomialType>().getDegreeBound();
   auto maxIndex = lhs.size() + rhs.size() - 1;
@@ -43,7 +41,8 @@ OpFoldResult MulOp::fold(MulOp::FoldAdaptor adaptor) {
     int j = 0;
     for (auto rhsIt = rhs.value_begin<APInt>(); rhsIt != rhs.value_end<APInt>();
          ++rhsIt) {
-      // index is modulo degree because poly's semantics are defined modulo x^N = 1.
+      // index is modulo degree because poly's semantics are defined modulo x^N
+      // = 1.
       result[(i + j) % degree] += *rhsIt * (*lhsIt);
       ++j;
     }
@@ -67,6 +66,6 @@ LogicalResult EvalOp::verify() {
              : emitOpError("argument point must be a 32-bit integer");
 }
 
-} // namespace poly
-} // namespace tutorial
-} // namespace mlir
+}  // namespace poly
+}  // namespace tutorial
+}  // namespace mlir
