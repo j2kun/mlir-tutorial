@@ -62,9 +62,13 @@ OpFoldResult FromTensorOp::fold(FromTensorOp::FoldAdaptor adaptor) {
 }
 
 LogicalResult EvalOp::verify() {
-  return getPoint().getType().isSignlessInteger(32)
-             ? success()
-             : emitOpError("argument point must be a 32-bit integer");
+  auto pointTy = getPoint().getType();
+  bool isSignlessInteger = pointTy.isSignlessInteger(32);
+  auto complexPt = llvm::dyn_cast<ComplexType>(pointTy);
+  return isSignlessInteger || complexPt ? success()
+                                        : emitOpError(
+                                              "argument point must be a 32-bit "
+                                              "integer, or a complex number");
 }
 
 // Rewrites (x^2 - y^2) as (x+y)(x-y) if x^2 and y^2 have no other uses.
