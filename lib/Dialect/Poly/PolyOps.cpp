@@ -21,8 +21,8 @@ OpFoldResult SubOp::fold(SubOp::FoldAdaptor adaptor) {
 }
 
 OpFoldResult MulOp::fold(MulOp::FoldAdaptor adaptor) {
-  auto lhs = dyn_cast<DenseIntElementsAttr>(adaptor.getOperands()[0]);
-  auto rhs = dyn_cast<DenseIntElementsAttr>(adaptor.getOperands()[1]);
+  auto lhs = dyn_cast_or_null<DenseIntElementsAttr>(adaptor.getOperands()[0]);
+  auto rhs = dyn_cast_or_null<DenseIntElementsAttr>(adaptor.getOperands()[1]);
 
   if (!lhs || !rhs) return nullptr;
 
@@ -57,7 +57,7 @@ OpFoldResult MulOp::fold(MulOp::FoldAdaptor adaptor) {
 
 OpFoldResult FromTensorOp::fold(FromTensorOp::FoldAdaptor adaptor) {
   // Returns null if the cast failed, which corresponds to a failed fold.
-  return dyn_cast<DenseIntElementsAttr>(adaptor.getInput());
+  return dyn_cast_or_null<DenseIntElementsAttr>(adaptor.getInput());
 }
 
 LogicalResult EvalOp::verify() {
