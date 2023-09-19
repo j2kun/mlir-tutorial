@@ -53,6 +53,7 @@ def Poly_EvalOp : Op<Poly_Dialect, "eval", [AllTypesMatch<["point", "output"]>, 
   let results = (outs IntOrComplex:$output);
   let assemblyFormat = "$input `,` $point attr-dict `:` `(` qualified(type($input)) `,` type($point) `)` `->` type($output)";
   let hasVerifier = 1;
+  let hasCanonicalizer = 1;
 }
 
 def Poly_ConstantOp : Op<Poly_Dialect, "constant", [Pure, ConstantLike]> {

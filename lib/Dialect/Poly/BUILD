@@ -110,9 +110,11 @@ cc_library(
         "PolyTypes.h",
     ],
     deps = [
+        ":canonicalize_inc_gen",
         ":dialect_inc_gen",
         ":ops_inc_gen",
         ":types_inc_gen",
+        "@llvm-project//mlir:ComplexDialect",
         "@llvm-project//mlir:Dialect",
         "@llvm-project//mlir:IR",
         "@llvm-project//mlir:InferTypeOpInterface",

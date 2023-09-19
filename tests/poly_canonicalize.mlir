@@ -43,3 +43,16 @@ func.func @test_difference_of_squares_other_uses(
   %5 = poly.add %4, %2 : !poly.poly<3>
   return %5 : !poly.poly<3>
 }
+
+// CHECK-LABEL: func.func @test_normalize_conj_through_eval
+// CHECK-SAME: %[[f:.+]]: !poly.poly<3>,
+// CHECK-SAME: %[[z:.+]]: complex<f64>
+func.func @test_normalize_conj_through_eval(
+    %f: !poly.poly<3>, %z: complex<f64>) -> complex<f64> {
+  // CHECK: %[[evaled:.+]] = poly.eval %[[f]], %[[z]]
+  // CHECK-NEXT: %[[eval_bar:.+]] = complex.conj %[[evaled]]
+  // CHECK-NEXT: return %[[eval_bar]]
+  %z_bar = complex.conj %z : complex<f64>
+  %evaled = poly.eval %f, %z_bar : (!poly.poly<3>, complex<f64>) -> complex<f64>
+  return %evaled : complex<f64>
+}
