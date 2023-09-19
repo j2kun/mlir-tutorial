@@ -66,6 +66,15 @@ LogicalResult EvalOp::verify() {
              : emitOpError("argument point must be a 32-bit integer");
 }
 
+void AddOp::getCanonicalizationPatterns(::mlir::RewritePatternSet &results,
+                                        ::mlir::MLIRContext *context) {}
+
+void SubOp::getCanonicalizationPatterns(::mlir::RewritePatternSet &results,
+                                        ::mlir::MLIRContext *context) {}
+
+void MulOp::getCanonicalizationPatterns(::mlir::RewritePatternSet &results,
+                                        ::mlir::MLIRContext *context) {}
+
 }  // namespace poly
 }  // namespace tutorial
 }  // namespace mlir

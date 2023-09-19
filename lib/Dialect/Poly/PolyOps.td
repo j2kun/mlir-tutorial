@@ -22,6 +22,7 @@ class Poly_BinOp<string mnemonic> : Op<Poly_Dialect, mnemonic, [Pure, Elementwis
   let results = (outs PolyOrContainer:$output);
   let assemblyFormat = "$lhs `,` $rhs attr-dict `:` qualified(type($output))";
   let hasFolder = 1;
+  let hasCanonicalizer = 1;
 }
 
 def Poly_AddOp : Poly_BinOp<"add"> {
