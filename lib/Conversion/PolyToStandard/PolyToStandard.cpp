@@ -118,6 +118,24 @@ struct ConvertToTensor : public OpConversionPattern<ToTensorOp> {
   }
 };
 
+struct ConvertConstant : public OpConversionPattern<ConstantOp> {
+  ConvertConstant(mlir::MLIRContext *context)
+      : OpConversionPattern<ConstantOp>(context) {}
+
+  using OpConversionPattern::OpConversionPattern;
+
+  LogicalResult matchAndRewrite(
+      ConstantOp op, OpAdaptor adaptor,
+      ConversionPatternRewriter &rewriter) const override {
+    ImplicitLocOpBuilder b(op.getLoc(), rewriter);
+    auto constOp = b.create<arith::ConstantOp>(adaptor.getCoefficients());
+    auto fromTensorOp =
+        b.create<FromTensorOp>(op.getResult().getType(), constOp);
+    rewriter.replaceOp(op, fromTensorOp.getResult());
+    return success();
+  }
+};
+
 struct PolyToStandard : impl::PolyToStandardBase<PolyToStandard> {
   using PolyToStandardBase::PolyToStandardBase;
 
@@ -131,8 +149,8 @@ struct PolyToStandard : impl::PolyToStandardBase<PolyToStandard> {
 
     RewritePatternSet patterns(context);
     PolyToStandardTypeConverter typeConverter(context);
-    patterns.add<ConvertAdd, ConvertSub, ConvertFromTensor, ConvertToTensor>(
-        typeConverter, context);
+    patterns.add<ConvertAdd, ConvertConstant, ConvertSub, ConvertFromTensor,
+                 ConvertToTensor>(typeConverter, context);
 
     populateFunctionOpInterfaceTypeConversionPattern<func::FuncOp>(
         patterns, typeConverter);
