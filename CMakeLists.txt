@@ -16,3 +16,4 @@ include(AddMLIR)
 
 add_subdirectory(tests)
 add_subdirectory(tools)
+add_subdirectory(lib)
