@@ -11,6 +11,7 @@ cc_binary(
     srcs = ["tutorial-opt.cpp"],
     includes = ["include"],
     deps = [
+        "//lib/Conversion/PolyToStandard",
         "//lib/Dialect/Poly",
         "//lib/Transform/Affine:Passes",
         "//lib/Transform/Arith:Passes",
