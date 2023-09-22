@@ -11,4 +11,8 @@ message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 include(AddLLVM)
 
+list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
+include(AddMLIR)
+
 add_subdirectory(tests)
+add_subdirectory(tools)
