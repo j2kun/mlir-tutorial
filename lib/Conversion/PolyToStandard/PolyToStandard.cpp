@@ -17,7 +17,15 @@ struct PolyToStandard : impl::PolyToStandardBase<PolyToStandard> {
   void runOnOperation() override {
     MLIRContext *context = &getContext();
     auto *module = getOperation();
-    // TODO: implement pass
+
+    ConversionTarget target(*context);
+    target.addIllegalDialect<PolyDialect>();
+
+    RewritePatternSet patterns(context);
+
+    if (failed(applyPartialConversion(module, target, std::move(patterns)))) {
+      signalPassFailure();
+    }
   }
 };
 
