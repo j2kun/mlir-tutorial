@@ -10,6 +10,7 @@ message(STATUS "Using MLIRConfig.cmake in: ${MLIR_DIR}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
 
 include(AddLLVM)
+include(TableGen)
 
 list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
 include(AddMLIR)
