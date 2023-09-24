@@ -14,6 +14,7 @@ include(TableGen)
 
 list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
 include(AddMLIR)
+include_directories(${MLIR_INCLUDE_DIRS})
 
 add_subdirectory(tests)
 add_subdirectory(tools)
