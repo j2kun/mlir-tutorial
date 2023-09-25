@@ -10,6 +10,6 @@
 #include "mlir/include/mlir/IR/Dialect.h"         // from @llvm-project
 
 #define GET_OP_CLASSES
-#include "lib/Dialect/Poly/PolyOps.h.inc"
+#include "lib/Dialect/Poly/Poly.h.inc"
 
 #endif // LIB_DIALECT_POLY_POLYOPS_H_

@@ -8,7 +8,7 @@ td_library(
     name = "td_files",
     srcs = [
         "PolyDialect.td",
-        "PolyOps.td",
+        "Poly.td",
         "PolyPatterns.td",
         "PolyTypes.td",
     ],
@@ -64,15 +64,15 @@ gentbl_cc_library(
     tbl_outs = [
         (
             ["-gen-op-decls"],
-            "PolyOps.h.inc",
+            "Poly.h.inc",
         ),
         (
             ["-gen-op-defs"],
-            "PolyOps.cpp.inc",
+            "Poly.cpp.inc",
         ),
     ],
     tblgen = "@llvm-project//mlir:mlir-tblgen",
-    td_file = "PolyOps.td",
+    td_file = "Poly.td",
     deps = [
         ":dialect_inc_gen",
         ":td_files",
