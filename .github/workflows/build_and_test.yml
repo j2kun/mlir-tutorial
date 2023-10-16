@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test w/Bazel
 permissions: read-all
 on:
   push:
