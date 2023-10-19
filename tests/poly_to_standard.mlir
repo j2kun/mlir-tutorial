@@ -50,3 +50,30 @@ func.func @test_lower_add_and_fold() {
   %2 = poly.add %0, %1: !poly.poly<10>
   return
 }
+
+// CHECK-LABEL: test_lower_mul
+// CHECK-SAME:  (%[[p0:.*]]: [[T:tensor<10xi32>]], %[[p1:.*]]: [[T]]) -> [[T]] {
+// CHECK:    %[[cst:.*]] = arith.constant dense<0> : [[T]]
+// CHECK:    %[[c0:.*]] = arith.constant 0 : index
+// CHECK:    %[[c10:.*]] = arith.constant 10 : index
+// CHECK:    %[[c1:.*]] = arith.constant 1 : index
+// CHECK:    %[[outer:.*]] = scf.for %[[outer_iv:.*]] = %[[c0]] to %[[c10]] step %[[c1]] iter_args(%[[outer_iter_arg:.*]] = %[[cst]]) -> ([[T]]) {
+// CHECK:      %[[inner:.*]] = scf.for %[[inner_iv:.*]] = %[[c0]] to %[[c10]] step %[[c1]] iter_args(%[[inner_iter_arg:.*]] = %[[outer_iter_arg]]) -> ([[T]]) {
+// CHECK:        %[[index_sum:.*]] = arith.addi %arg2, %arg4
+// CHECK:        %[[dest_index:.*]] = arith.remui %[[index_sum]], %[[c10]]
+// CHECK-DAG:    %[[p0_extracted:.*]] = tensor.extract %[[p0]][%[[outer_iv]]]
+// CHECK-DAG:    %[[p1_extracted:.*]] = tensor.extract %[[p1]][%[[inner_iv]]]
+// CHECK:        %[[coeff_mul:.*]] = arith.muli %[[p0_extracted]], %[[p1_extracted]]
+// CHECK:        %[[accum:.*]] = tensor.extract %[[inner_iter_arg]][%[[dest_index]]]
+// CHECK:        %[[to_insert:.*]] = arith.addi %[[coeff_mul]], %[[accum]]
+// CHECK:        %[[inserted:.*]] = tensor.insert %[[to_insert]] into %[[inner_iter_arg]][%[[dest_index]]]
+// CHECK:        scf.yield %[[inserted]]
+// CHECK:      }
+// CHECK:      scf.yield %[[inner]]
+// CHECK:    }
+// CHECK:    return %[[outer]]
+// CHECK:  }
+func.func @test_lower_mul(%0 : !poly.poly<10>, %1 : !poly.poly<10>) -> !poly.poly<10> {
+  %2 = poly.mul %0, %1: !poly.poly<10>
+  return %2 : !poly.poly<10>
+}
