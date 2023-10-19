@@ -1,4 +1,5 @@
-build --action_env=BAZEL_CXXOPTS=-std=c++17
-build --cxxopt='-std=c++17'
-build --host_cxxopt='-std=c++17'
-test --test_output=all
+common --action_env=BAZEL_CXXOPTS=-std=c++17
+common --cxxopt='-std=c++17'
+common --copt=-fdiagnostics-color=always
+common --test_output=errors
+common -c dbg
