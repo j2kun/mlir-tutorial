@@ -31,6 +31,8 @@ cc_library(
         "pass_inc_gen",
         "//lib/Dialect/Poly",
         "@llvm-project//mlir:ArithDialect",
+        "@llvm-project//mlir:FuncDialect",
+        "@llvm-project//mlir:FuncTransforms",
         "@llvm-project//mlir:IR",
         "@llvm-project//mlir:Pass",
         "@llvm-project//mlir:TensorDialect",
