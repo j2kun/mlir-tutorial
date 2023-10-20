@@ -97,3 +97,15 @@ func.func @test_lower_eval(%0 : !poly.poly<10>, %1 : i32) -> i32 {
   %2 = poly.eval %0, %1: (!poly.poly<10>, i32) -> i32
   return %2 : i32
 }
+
+
+// CHECK-LABEL: test_lower_many
+// CHECK-NOT: poly
+func.func @test_lower_many(%arg : !poly.poly<10>, %point : i32) -> i32 {
+  %0 = poly.constant dense<[2, 3, 4]> : tensor<3xi32> : !poly.poly<10>
+  %1 = poly.add %0, %arg : !poly.poly<10>
+  %2 = poly.mul %1, %1 : !poly.poly<10>
+  %3 = poly.sub %2, %arg : !poly.poly<10>
+  %4 = poly.eval %3, %point: (!poly.poly<10>, i32) -> i32
+  return %4 : i32
+}
