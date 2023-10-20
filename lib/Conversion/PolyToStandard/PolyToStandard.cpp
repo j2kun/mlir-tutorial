@@ -32,6 +32,20 @@ class PolyToStandardTypeConverter : public TypeConverter {
   }
 };
 
+struct ConvertAdd : public OpConversionPattern<AddOp> {
+  ConvertAdd(mlir::MLIRContext *context)
+      : OpConversionPattern<AddOp>(context) {}
+
+  using OpConversionPattern::OpConversionPattern;
+
+  LogicalResult matchAndRewrite(
+      AddOp op, OpAdaptor adaptor,
+      ConversionPatternRewriter &rewriter) const override {
+    // TODO: implement
+    return success();
+  }
+};
+
 struct PolyToStandard : impl::PolyToStandardBase<PolyToStandard> {
   using PolyToStandardBase::PolyToStandardBase;
 
@@ -40,9 +54,12 @@ struct PolyToStandard : impl::PolyToStandardBase<PolyToStandard> {
     auto *module = getOperation();
 
     ConversionTarget target(*context);
+    target.addLegalDialect<arith::ArithDialect>();
     target.addIllegalDialect<PolyDialect>();
 
     RewritePatternSet patterns(context);
+    PolyToStandardTypeConverter typeConverter(context);
+    patterns.add<ConvertAdd>(typeConverter, context);
 
     if (failed(applyPartialConversion(module, target, std::move(patterns)))) {
       signalPassFailure();
