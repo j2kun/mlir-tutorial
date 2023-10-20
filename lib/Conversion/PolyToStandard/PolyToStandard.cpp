@@ -27,17 +27,13 @@ class PolyToStandardTypeConverter : public TypeConverter {
       return RankedTensorType::get({degreeBound}, elementTy);
     });
 
-    // Convert from a tensor type to a poly type: use from_tensor
-    addSourceMaterialization([](OpBuilder &builder, Type type,
-                                ValueRange inputs, Location loc) -> Value {
-      return builder.create<poly::FromTensorOp>(loc, type, inputs[0]);
-    });
-
-    // Convert from a poly type to a tensor type: use to_tensor
-    addTargetMaterialization([](OpBuilder &builder, Type type,
-                                ValueRange inputs, Location loc) -> Value {
-      return builder.create<poly::ToTensorOp>(loc, type, inputs[0]);
-    });
+    // We don't include any custom materialization hooks because this lowering
+    // is all done in a single pass. The dialect conversion framework works by
+    // resolving intermediate (mid-pass) type conflicts by inserting
+    // unrealized_conversion_cast ops, and only converting those to custom
+    // materializations if they persist at the end of the pass. In our case,
+    // we'd only need to use custom materializations if we split this lowering
+    // across multiple passes.
   }
 };
 
@@ -53,6 +49,22 @@ struct ConvertAdd : public OpConversionPattern<AddOp> {
     arith::AddIOp addOp = rewriter.create<arith::AddIOp>(
         op.getLoc(), adaptor.getLhs(), adaptor.getRhs());
     rewriter.replaceOp(op.getOperation(), {addOp});
+    return success();
+  }
+};
+
+struct ConvertSub : public OpConversionPattern<SubOp> {
+  ConvertSub(mlir::MLIRContext *context)
+      : OpConversionPattern<SubOp>(context) {}
+
+  using OpConversionPattern::OpConversionPattern;
+
+  LogicalResult matchAndRewrite(
+      SubOp op, OpAdaptor adaptor,
+      ConversionPatternRewriter &rewriter) const override {
+    arith::SubIOp subOp = rewriter.create<arith::SubIOp>(
+        op.getLoc(), adaptor.getLhs(), adaptor.getRhs());
+    rewriter.replaceOp(op.getOperation(), {subOp});
     return success();
   }
 };
@@ -245,14 +257,13 @@ struct PolyToStandard : impl::PolyToStandardBase<PolyToStandard> {
 
     ConversionTarget target(*context);
     target.addLegalDialect<arith::ArithDialect>();
-    target.addIllegalOp<AddOp, MulOp, EvalOp, ConstantOp, EvalOp, FromTensorOp,
-                        ToTensorOp>();
-    // target.addIllegalDialect<PolyDialect>();
+    target.addIllegalDialect<PolyDialect>();
 
     RewritePatternSet patterns(context);
     PolyToStandardTypeConverter typeConverter(context);
-    patterns.add<ConvertAdd, ConvertConstant, ConvertEval, ConvertMul,
-                 ConvertFromTensor, ConvertToTensor>(typeConverter, context);
+    patterns.add<ConvertAdd, ConvertConstant, ConvertSub, ConvertEval,
+                 ConvertMul, ConvertFromTensor, ConvertToTensor>(typeConverter,
+                                                                 context);
 
     populateFunctionOpInterfaceTypeConversionPattern<func::FuncOp>(
         patterns, typeConverter);
