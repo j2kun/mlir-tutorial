@@ -39,6 +39,9 @@ module {
     %12 = poly.constant dense<"0x020304"> : tensor<3xi8> : !poly.poly<10>
     %13 = poly.constant dense<4> : tensor<100xi32> : !poly.poly<10>
 
+    // CHECK: poly.to_tensor
+    %14 = poly.to_tensor %1 : !poly.poly<10> -> tensor<10xi32>
+
     return %4 : !poly.poly<10>
   }
 }

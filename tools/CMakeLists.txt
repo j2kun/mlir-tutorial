@@ -9,6 +9,7 @@ set (LIBS
     MulToAdd
     MLIROptLib
     MLIRPass
+    PolyToStandard
 )
 
 add_llvm_executable(tutorial-opt tutorial-opt.cpp)

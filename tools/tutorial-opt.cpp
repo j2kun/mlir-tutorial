@@ -1,3 +1,4 @@
+#include "lib/Conversion/PolyToStandard/PolyToStandard.h"
 #include "lib/Dialect/Poly/PolyDialect.h"
 #include "lib/Transform/Affine/Passes.h"
 #include "lib/Transform/Arith/Passes.h"
@@ -15,6 +16,9 @@ int main(int argc, char **argv) {
 
   mlir::tutorial::registerAffinePasses();
   mlir::tutorial::registerArithPasses();
+
+  // Dialect conversion passes
+  mlir::tutorial::poly::registerPolyToStandardPasses();
 
   return mlir::asMainReturnCode(
       mlir::MlirOptMain(argc, argv, "Tutorial Pass Driver", registry));
