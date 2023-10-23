@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
       - uses: seanmiddleditch/gha-setup-ninja@master
 
       - name: Install prerequisites
@@ -25,7 +27,11 @@ jobs:
         with:
           path: |
             ./externals/llvm-project
-          key: ${{ runner.os }}-norm-${{ hashFiles('externals/llvm-project/llvm/CMakeLists.txt') }}
+          key: ${{ runner.os }}-norm-${{ hashFiles('**/CMakeLists.txt') }}
+
+      - name: Git config
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: Build LLVM
         if: steps.cache-llvm.outputs.cache-hit != 'true'
@@ -39,7 +45,7 @@ jobs:
       - name: Build and test mlir-tutorial
         run: |
           mkdir build && cd build
-          cmake -DLLVM_DIR=$PWD/../externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=$PWD/../externals/llvm-project/build/lib/cmake/mlir ..
+          cmake -DLLVM_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/mlir ..
           cmake --build . --target MLIRAffineFullUnrollPasses
           cmake --build . --target MLIRMulToAddPasses
           cmake --build . --target mlir-headers
