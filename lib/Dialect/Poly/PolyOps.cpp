@@ -16,12 +16,12 @@ OpFoldResult ConstantOp::fold(ConstantOp::FoldAdaptor adaptor) {
 }
 
 OpFoldResult AddOp::fold(AddOp::FoldAdaptor adaptor) {
-  return constFoldBinaryOp<IntegerAttr, APInt>(
+  return constFoldBinaryOp<IntegerAttr, APInt, void>(
       adaptor.getOperands(), [&](APInt a, APInt b) { return a + b; });
 }
 
 OpFoldResult SubOp::fold(SubOp::FoldAdaptor adaptor) {
-  return constFoldBinaryOp<IntegerAttr, APInt>(
+  return constFoldBinaryOp<IntegerAttr, APInt, void>(
       adaptor.getOperands(), [&](APInt a, APInt b) { return a - b; });
 }
 
