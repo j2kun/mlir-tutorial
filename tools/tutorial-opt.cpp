@@ -46,6 +46,12 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   manager.addPass(mlir::createConvertFuncToLLVMPass());
   manager.addPass(mlir::createFinalizeMemRefToLLVMConversionPass());
   manager.addPass(mlir::createReconcileUnrealizedCastsPass());
+
+  // Cleanup
+  manager.addPass(mlir::createCanonicalizerPass());
+  manager.addPass(mlir::createSCCPPass());
+  manager.addPass(mlir::createCSEPass());
+  manager.addPass(mlir::createSymbolDCEPass());
 }
 
 int main(int argc, char **argv) {
