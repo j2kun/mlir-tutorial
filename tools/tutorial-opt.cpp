@@ -23,7 +23,6 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   manager.addPass(mlir::tutorial::poly::createPolyToStandard());
   manager.addPass(mlir::createCanonicalizerPass());
 
-  manager.addPass(mlir::createConvertFuncToLLVMPass());
   manager.addPass(mlir::createConvertElementwiseToLinalgPass());
   manager.addPass(mlir::createConvertTensorToLinalgPass());
 
@@ -36,9 +35,9 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   mlir::bufferization::BufferDeallocationPipelineOptions deallocationOptions;
   mlir::bufferization::buildBufferDeallocationPipeline(manager, deallocationOptions);
 
-  // Does nothing yet!
   manager.addPass(mlir::createConvertLinalgToLoopsPass());
 
+  manager.addPass(mlir::createConvertFuncToLLVMPass());
   manager.addPass(mlir::createConvertSCFToCFPass());
   manager.addPass(mlir::createConvertControlFlowToLLVMPass());
   manager.addPass(mlir::createArithToLLVMConversionPass());
