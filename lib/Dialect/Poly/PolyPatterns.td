@@ -6,8 +6,8 @@ include "mlir/Dialect/Complex/IR/ComplexOps.td"
 include "mlir/IR/PatternBase.td"
 
 def LiftConjThroughEval : Pat<
-  (Poly_EvalOp $f, (ConjOp $z)),
-  (ConjOp (Poly_EvalOp $f, $z))
+  (Poly_EvalOp $f, (ConjOp $z, $fastmath)),
+  (ConjOp (Poly_EvalOp $f, $z), $fastmath)
 >;
 
 def HasOneUse: Constraint<CPred<"$_self.hasOneUse()">, "has one use">;
