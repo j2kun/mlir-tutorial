@@ -2,6 +2,7 @@
 #include "lib/Dialect/Poly/PolyDialect.h"
 #include "lib/Transform/Affine/Passes.h"
 #include "lib/Transform/Arith/Passes.h"
+#include "mlir/include/mlir/Conversion/FuncToLLVM/ConvertFuncToLLVMPass.h"
 #include "mlir/include/mlir/InitAllDialects.h"
 #include "mlir/include/mlir/InitAllPasses.h"
 #include "mlir/include/mlir/Pass/PassManager.h"
@@ -13,6 +14,8 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   // Poly
   manager.addPass(mlir::tutorial::poly::createPolyToStandard());
   manager.addPass(mlir::createCanonicalizerPass());
+
+  manager.addPass(mlir::createConvertFuncToLLVMPass());
 }
 
 int main(int argc, char **argv) {
