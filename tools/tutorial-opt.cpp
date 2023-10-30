@@ -22,6 +22,9 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   manager.addPass(mlir::createConvertElementwiseToLinalgPass());
   manager.addPass(mlir::createArithToLLVMConversionPass());
   manager.addPass(mlir::createConvertTensorToLinalgPass());
+
+  // Does nothing yet!
+  manager.addPass(mlir::createConvertLinalgToLoopsPass());
 }
 
 int main(int argc, char **argv) {
