@@ -1,6 +1,9 @@
-// RUN: tutorial-opt --poly-to-llvm %s | FileCheck %s
+// RUN: tutorial-opt --poly-to-llvm %s | mlir-translate --mlir-to-llvmir | llc -filetype=obj > %t
+// RUN: clang -c poly_to_llvm_main.c
+// RUN: clang poly_to_llvm_main.o %t -o a.out
+// RUN: ./a.out | FileCheck %s
 
-// CHECK-NOT: poly
+// CHECK: 351
 func.func @test_poly_fn(%arg : i32) -> i32 {
   %tens = tensor.splat %arg : tensor<10xi32>
   %input = poly.from_tensor %tens : tensor<10xi32> -> !poly.poly<10>
