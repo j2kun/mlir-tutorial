@@ -22,6 +22,8 @@ cc_binary(
         "@llvm-project//mlir:ControlFlowToLLVM",
         "@llvm-project//mlir:FuncToLLVM",
         "@llvm-project//mlir:LinalgTransforms",
+        "@llvm-project//mlir:MemRefToLLVM",
+        "@llvm-project//mlir:MemRefTransforms",
         "@llvm-project//mlir:MlirOptLib",
         "@llvm-project//mlir:Pass",
         "@llvm-project//mlir:SCFToControlFlow",
