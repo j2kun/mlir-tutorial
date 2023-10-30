@@ -17,10 +17,12 @@ cc_binary(
         "//lib/Transform/Arith:Passes",
         "@llvm-project//mlir:AllPassesAndDialects",
         "@llvm-project//mlir:ArithToLLVM",
+        "@llvm-project//mlir:ControlFlowToLLVM",
         "@llvm-project//mlir:FuncToLLVM",
         "@llvm-project//mlir:LinalgTransforms",
         "@llvm-project//mlir:MlirOptLib",
         "@llvm-project//mlir:Pass",
+        "@llvm-project//mlir:SCFToControlFlow",
         "@llvm-project//mlir:TensorToLinalg",
     ],
 )

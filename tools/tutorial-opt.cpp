@@ -3,7 +3,9 @@
 #include "lib/Transform/Affine/Passes.h"
 #include "lib/Transform/Arith/Passes.h"
 #include "mlir/include/mlir/Conversion/ArithToLLVM/ArithToLLVM.h"
+#include "mlir/include/mlir/Conversion/ControlFlowToLLVM/ControlFlowToLLVM.h"
 #include "mlir/include/mlir/Conversion/FuncToLLVM/ConvertFuncToLLVMPass.h"
+#include "mlir/include/mlir/Conversion/SCFToControlFlow/SCFToControlFlow.h"
 #include "mlir/include/mlir/Conversion/TensorToLinalg/TensorToLinalgPass.h"
 #include "mlir/include/mlir/Dialect/Linalg/Passes.h"
 #include "mlir/include/mlir/InitAllDialects.h"
@@ -12,6 +14,7 @@
 #include "mlir/include/mlir/Pass/PassRegistry.h"
 #include "mlir/include/mlir/Tools/mlir-opt/MlirOptMain.h"
 #include "mlir/include/mlir/Transforms/Passes.h"
+//
 
 void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   // Poly
@@ -25,6 +28,9 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
 
   // Does nothing yet!
   manager.addPass(mlir::createConvertLinalgToLoopsPass());
+
+  manager.addPass(mlir::createConvertSCFToCFPass());
+  manager.addPass(mlir::createConvertControlFlowToLLVMPass());
 }
 
 int main(int argc, char **argv) {
