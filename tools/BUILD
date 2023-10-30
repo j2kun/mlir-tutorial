@@ -21,5 +21,6 @@ cc_binary(
         "@llvm-project//mlir:LinalgTransforms",
         "@llvm-project//mlir:MlirOptLib",
         "@llvm-project//mlir:Pass",
+        "@llvm-project//mlir:TensorToLinalg",
     ],
 )

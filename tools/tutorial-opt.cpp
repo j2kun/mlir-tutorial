@@ -4,6 +4,7 @@
 #include "lib/Transform/Arith/Passes.h"
 #include "mlir/include/mlir/Conversion/ArithToLLVM/ArithToLLVM.h"
 #include "mlir/include/mlir/Conversion/FuncToLLVM/ConvertFuncToLLVMPass.h"
+#include "mlir/include/mlir/Conversion/TensorToLinalg/TensorToLinalgPass.h"
 #include "mlir/include/mlir/Dialect/Linalg/Passes.h"
 #include "mlir/include/mlir/InitAllDialects.h"
 #include "mlir/include/mlir/InitAllPasses.h"
@@ -20,6 +21,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   manager.addPass(mlir::createConvertFuncToLLVMPass());
   manager.addPass(mlir::createConvertElementwiseToLinalgPass());
   manager.addPass(mlir::createArithToLLVMConversionPass());
+  manager.addPass(mlir::createConvertTensorToLinalgPass());
 }
 
 int main(int argc, char **argv) {
