@@ -7,6 +7,8 @@
 #include "mlir/include/mlir/Conversion/FuncToLLVM/ConvertFuncToLLVMPass.h"
 #include "mlir/include/mlir/Conversion/SCFToControlFlow/SCFToControlFlow.h"
 #include "mlir/include/mlir/Conversion/TensorToLinalg/TensorToLinalgPass.h"
+#include "mlir/include/mlir/Dialect/Bufferization/Pipelines/Passes.h"
+#include "mlir/include/mlir/Dialect/Bufferization/Transforms/Passes.h"
 #include "mlir/include/mlir/Dialect/Linalg/Passes.h"
 #include "mlir/include/mlir/InitAllDialects.h"
 #include "mlir/include/mlir/InitAllPasses.h"
@@ -24,6 +26,15 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   manager.addPass(mlir::createConvertFuncToLLVMPass());
   manager.addPass(mlir::createConvertElementwiseToLinalgPass());
   manager.addPass(mlir::createConvertTensorToLinalgPass());
+
+  // One-shot bufferize, from
+  // https://mlir.llvm.org/docs/Bufferization/#ownership-based-buffer-deallocation
+  mlir::bufferization::OneShotBufferizationOptions bufferizationOptions;
+  bufferizationOptions.bufferizeFunctionBoundaries = true;
+  manager.addPass(
+      mlir::bufferization::createOneShotBufferizePass(bufferizationOptions));
+  mlir::bufferization::BufferDeallocationPipelineOptions deallocationOptions;
+  mlir::bufferization::buildBufferDeallocationPipeline(manager, deallocationOptions);
 
   // Does nothing yet!
   manager.addPass(mlir::createConvertLinalgToLoopsPass());

@@ -17,6 +17,8 @@ cc_binary(
         "//lib/Transform/Arith:Passes",
         "@llvm-project//mlir:AllPassesAndDialects",
         "@llvm-project//mlir:ArithToLLVM",
+        "@llvm-project//mlir:BufferizationPipelines",
+        "@llvm-project//mlir:BufferizationTransforms",
         "@llvm-project//mlir:ControlFlowToLLVM",
         "@llvm-project//mlir:FuncToLLVM",
         "@llvm-project//mlir:LinalgTransforms",
