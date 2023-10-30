@@ -23,7 +23,6 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
 
   manager.addPass(mlir::createConvertFuncToLLVMPass());
   manager.addPass(mlir::createConvertElementwiseToLinalgPass());
-  manager.addPass(mlir::createArithToLLVMConversionPass());
   manager.addPass(mlir::createConvertTensorToLinalgPass());
 
   // Does nothing yet!
@@ -31,6 +30,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
 
   manager.addPass(mlir::createConvertSCFToCFPass());
   manager.addPass(mlir::createConvertControlFlowToLLVMPass());
+  manager.addPass(mlir::createArithToLLVMConversionPass());
 }
 
 int main(int argc, char **argv) {
