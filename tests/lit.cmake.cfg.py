@@ -25,6 +25,7 @@ config.test_exec_root = os.path.join(config.project_binary_dir, "tests")
 
 config.substitutions.append(("%PATH%", config.environment["PATH"]))
 config.substitutions.append(("%shlibext", config.llvm_shlib_ext))
+config.substitutions.append(("%project_source_dir", config.project_source_dir))
 
 llvm_config.with_system_environment(["HOME", "INCLUDE", "LIB", "TMP", "TEMP"])
 
