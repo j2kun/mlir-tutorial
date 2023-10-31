@@ -1,4 +1,4 @@
-// RUN: tutorial-opt --poly-to-llvm %s | mlir-translate --mlir-to-llvmir | llc -filetype=obj > %t
+// RUN: tutorial-opt --poly-to-llvm %s | mlir-translate --mlir-to-llvmir | llc --relocation-model=pic -filetype=obj > %t
 // RUN: clang -c poly_to_llvm_main.c
 // RUN: clang poly_to_llvm_main.o %t -o a.out
 // RUN: ./a.out | FileCheck %s
