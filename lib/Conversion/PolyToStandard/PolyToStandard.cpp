@@ -149,6 +149,8 @@ struct ConvertEval : public OpConversionPattern<EvalOp> {
     auto lowerBound =
         b.create<arith::ConstantOp>(b.getIndexType(), b.getIndexAttr(1));
     auto numTermsOp = b.create<arith::ConstantOp>(b.getIndexType(),
+                                                  b.getIndexAttr(numTerms));
+    auto upperBound = b.create<arith::ConstantOp>(b.getIndexType(),
                                                   b.getIndexAttr(numTerms + 1));
     auto step = lowerBound;
 
@@ -163,7 +165,7 @@ struct ConvertEval : public OpConversionPattern<EvalOp> {
     auto accum =
         b.create<arith::ConstantOp>(b.getI32Type(), b.getI32IntegerAttr(0));
     auto loop = b.create<scf::ForOp>(
-        lowerBound, numTermsOp, step, accum.getResult(),
+        lowerBound, upperBound, step, accum.getResult(),
         [&](OpBuilder &builder, Location loc, Value loopIndex,
             ValueRange loopState) {
           ImplicitLocOpBuilder b(op.getLoc(), builder);
