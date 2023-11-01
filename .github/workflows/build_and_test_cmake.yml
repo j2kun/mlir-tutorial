@@ -27,7 +27,7 @@ jobs:
         with:
           path: |
             ./externals/llvm-project
-          key: ${{ runner.os }}-norm-${{ hashFiles('**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-cmake-${{ hashFiles('bazel/import_llvm.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
 
       - name: Git config
         run: |
@@ -36,8 +36,10 @@ jobs:
       - name: Build LLVM
         if: steps.cache-llvm.outputs.cache-hit != 'true'
         run: |
+          LLVM_COMMIT=$(grep LLVM_COMMIT ${GITHUB_WORKSPACE}/bazel/import_llvm.bzl | head -n 1 | cut -d'"' -f 2 )
           git submodule update --init --recursive
           cd externals/llvm-project
+          git checkout ${LLVM_COMMIT}
           mkdir build && cd build
           cmake -G Ninja ../llvm -DLLVM_ENABLE_PROJECTS=mlir -DLLVM_BUILD_EXAMPLES=ON -DLLVM_ENABLE_ASSERTIONS=ON -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_RTTI=ON -DLLVM_TARGETS_TO_BUILD="host"
           cmake --build . --target check-mlir

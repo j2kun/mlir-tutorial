@@ -40,3 +40,8 @@ config.environment["PATH"] = (
     + ":"
     + os.environ["PATH"]
 )
+
+substitutions = {
+    "%project_source_dir": runfiles_dir.joinpath(Path('mlir_tutorial')),
+}
+config.substitutions.extend(substitutions.items())
