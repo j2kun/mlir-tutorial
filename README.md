@@ -15,7 +15,7 @@ on the [MLIR framework](https://mlir.llvm.org/) for building compilers.
 8. [Verifiers](https://jeremykun.com/2023/09/13/mlir-verifiers/)
 9. [Canonicalizers and Declarative Rewrite Patterns](https://jeremykun.com/2023/09/20/mlir-canonicalizers-and-declarative-rewrite-patterns/)
 10. [Dialect Conversion](https://jeremykun.com/2023/10/23/mlir-dialect-conversion/)
-11. Lowering through LLVM
+11. [Lowering through LLVM](https://jeremykun.com/2023/11/01/mlir-lowering-through-llvm/)
 
 
 ## Bazel build
