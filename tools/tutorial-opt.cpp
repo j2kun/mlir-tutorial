@@ -1,5 +1,6 @@
 #include "lib/Conversion/PolyToStandard/PolyToStandard.h"
 #include "lib/Dialect/Poly/PolyDialect.h"
+#include "lib/Dialect/Noisy/NoisyDialect.h"
 #include "lib/Transform/Affine/Passes.h"
 #include "lib/Transform/Arith/Passes.h"
 #include "mlir/include/mlir/Conversion/ArithToLLVM/ArithToLLVM.h"
@@ -16,7 +17,7 @@
 #include "mlir/include/mlir/Pass/PassRegistry.h"
 #include "mlir/include/mlir/Tools/mlir-opt/MlirOptMain.h"
 #include "mlir/include/mlir/Transforms/Passes.h"
-//
+
 
 void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   // Poly
@@ -57,6 +58,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
 int main(int argc, char **argv) {
   mlir::DialectRegistry registry;
   registry.insert<mlir::tutorial::poly::PolyDialect>();
+  registry.insert<mlir::tutorial::noisy::NoisyDialect>();
   mlir::registerAllDialects(registry);
   mlir::registerAllPasses();
 

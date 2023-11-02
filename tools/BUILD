@@ -12,6 +12,7 @@ cc_binary(
     includes = ["include"],
     deps = [
         "//lib/Conversion/PolyToStandard",
+        "//lib/Dialect/Noisy",
         "//lib/Dialect/Poly",
         "//lib/Transform/Affine:Passes",
         "//lib/Transform/Arith:Passes",
