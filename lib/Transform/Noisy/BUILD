@@ -38,6 +38,7 @@ cc_library(
     ],
     deps = [
         ":pass_inc_gen",
+        "//lib/Analysis/ReduceNoiseAnalysis",
         "//lib/Dialect/Noisy",
         "@llvm-project//llvm:Support",
         "@llvm-project//mlir:Analysis",

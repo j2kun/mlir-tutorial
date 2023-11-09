@@ -1,5 +1,6 @@
 #include "lib/Transform/Noisy/ReduceNoiseOptimizer.h"
 
+#include "lib/Analysis/ReduceNoiseAnalysis/ReduceNoiseAnalysis.h"
 #include "lib/Dialect/Noisy/NoisyOps.h"
 #include "lib/Dialect/Noisy/NoisyTypes.h"
 #include "mlir/include/mlir/Analysis/DataFlow/DeadCodeAnalysis.h"
@@ -22,6 +23,8 @@ struct ReduceNoiseOptimizer
 
   void runOnOperation() {
     Operation *module = getOperation();
+
+    ReduceNoiseAnalysis analysis(module);
 
     // Use the int range analysis to confirm the noise is always below the
     // maximum.
