@@ -16,7 +16,6 @@ namespace noisy {
 #define GEN_PASS_DEF_REDUCENOISEOPTIMIZER
 #include "lib/Transform/Noisy/Passes.h.inc"
 
-// A pass that manually walks the IR
 struct ReduceNoiseOptimizer
     : impl::ReduceNoiseOptimizerBase<ReduceNoiseOptimizer> {
   using ReduceNoiseOptimizerBase::ReduceNoiseOptimizerBase;
@@ -24,7 +23,18 @@ struct ReduceNoiseOptimizer
   void runOnOperation() {
     Operation *module = getOperation();
 
+    // FIXME: Should have some way to mark failure when solver is infeasible
     ReduceNoiseAnalysis analysis(module);
+    OpBuilder b(&getContext());
+
+    module->walk([&](Operation *op) {
+      if (!analysis.shouldInsertReduceNoise(op))
+        return;
+
+      b.setInsertionPointAfter(op);
+      auto reduceOp = b.create<ReduceNoiseOp>(op->getLoc(), op->getResult(0));
+      op->getResult(0).replaceAllUsesExcept(reduceOp.getResult(), {reduceOp});
+    });
 
     // Use the int range analysis to confirm the noise is always below the
     // maximum.
@@ -33,8 +43,11 @@ struct ReduceNoiseOptimizer
     // dependence is not automatic and fails silently.
     solver.load<dataflow::DeadCodeAnalysis>();
     solver.load<dataflow::IntegerRangeAnalysis>();
-    if (failed(solver.initializeAndRun(module)))
+    if (failed(solver.initializeAndRun(module))) {
+      getOperation()->emitOpError() << "Failed to run the analysis.\n";
       signalPassFailure();
+      return;
+    }
 
     auto result = module->walk([&](Operation *op) {
       if (!llvm::isa<noisy::AddOp, noisy::SubOp, noisy::MulOp,
@@ -63,8 +76,11 @@ struct ReduceNoiseOptimizer
       return WalkResult::advance();
     });
 
-    if (result.wasInterrupted())
+    if (result.wasInterrupted()) {
+      getOperation()->emitOpError()
+          << "Detected error in the noise analysis.\n";
       signalPassFailure();
+    }
   }
 };
 

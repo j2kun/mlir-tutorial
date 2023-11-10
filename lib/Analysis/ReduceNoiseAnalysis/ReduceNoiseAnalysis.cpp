@@ -237,10 +237,11 @@ ReduceNoiseAnalysis::ReduceNoiseAnalysis(Operation *op) {
         });
   });
 
-  std::string modelAsString;
-  solver->ExportModelAsLpFormat(false, &modelAsString);
-
-  LLVM_DEBUG(llvm::dbgs() << "Model string = " << modelAsString << "\n");
+  // Uncomment if you want to read the model's textual description,
+  // generally not for those unfamiliar with linear programming.
+  // std::string modelAsString;
+  // solver->ExportModelAsLpFormat(false, &modelAsString);
+  // LLVM_DEBUG(llvm::dbgs() << "Model string = " << modelAsString << "\n");
 
   solver->Solve();
   LLVM_DEBUG(llvm::dbgs() << "Problem solved in " << solver->wall_time()
@@ -250,11 +251,11 @@ ReduceNoiseAnalysis::ReduceNoiseAnalysis(Operation *op) {
   LLVM_DEBUG(llvm::dbgs() << "Solution:\n");
   LLVM_DEBUG(llvm::dbgs() << "Objective value = " << objective->Value()
                           << "\n");
-  LLVM_DEBUG(llvm::dbgs() << "Variables:\n");
-  for (auto var : allVariables) {
-    LLVM_DEBUG(llvm::dbgs() << "  " << var->name() << " = "
-                            << var->solution_value() << "\n");
-  }
+  // LLVM_DEBUG(llvm::dbgs() << "Variables:\n");
+  // for (auto var : allVariables) {
+  //   LLVM_DEBUG(llvm::dbgs() << "  " << var->name() << " = "
+  //                           << var->solution_value() << "\n");
+  // }
 
   for (auto item : decisionVariables) {
     solution.insert(std::make_pair(item.first, item.second->solution_value()));
