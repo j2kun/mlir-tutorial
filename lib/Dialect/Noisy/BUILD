@@ -13,6 +13,7 @@ td_library(
     ],
     deps = [
         "@llvm-project//mlir:BuiltinDialectTdFiles",
+        "@llvm-project//mlir:InferIntRangeInterfaceTdFiles",
         "@llvm-project//mlir:InferTypeOpInterfaceTdFiles",
         "@llvm-project//mlir:OpBaseTdFiles",
         "@llvm-project//mlir:SideEffectInterfacesTdFiles",
@@ -97,6 +98,7 @@ cc_library(
         "@llvm-project//mlir:ComplexDialect",
         "@llvm-project//mlir:Dialect",
         "@llvm-project//mlir:IR",
+        "@llvm-project//mlir:InferIntRangeInterface",
         "@llvm-project//mlir:InferTypeOpInterface",
         "@llvm-project//mlir:Support",
     ],
