@@ -39,6 +39,8 @@ cc_library(
     deps = [
         ":pass_inc_gen",
         "//lib/Dialect/Noisy",
+        "@llvm-project//llvm:Support",
+        "@llvm-project//mlir:Analysis",
         "@llvm-project//mlir:Pass",
         "@llvm-project//mlir:Transforms",
     ],
