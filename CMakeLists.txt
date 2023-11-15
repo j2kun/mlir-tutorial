@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.20.0)
 project(mlir-tutorial LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 find_package(MLIR REQUIRED CONFIG)
 
@@ -21,6 +22,16 @@ include_directories(${MLIR_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/externals/llvm-project)
 include_directories(${PROJECT_BINARY_DIR})
+
+message(STATUS "Fetching or-tools...")
+include(FetchContent)
+FetchContent_Declare(
+  or-tools
+  GIT_REPOSITORY https://github.com/google/or-tools.git
+  GIT_TAG        main
+)
+FetchContent_MakeAvailable(or-tools)
+message(STATUS "Done fetching or-tools")
 
 add_subdirectory(tests)
 add_subdirectory(tools)

@@ -12,9 +12,11 @@ cc_binary(
     includes = ["include"],
     deps = [
         "//lib/Conversion/PolyToStandard",
+        "//lib/Dialect/Noisy",
         "//lib/Dialect/Poly",
         "//lib/Transform/Affine:Passes",
         "//lib/Transform/Arith:Passes",
+        "//lib/Transform/Noisy:Passes",
         "@llvm-project//mlir:AllPassesAndDialects",
         "@llvm-project//mlir:ArithToLLVM",
         "@llvm-project//mlir:BufferizationPipelines",

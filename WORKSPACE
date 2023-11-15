@@ -1,6 +1,6 @@
 workspace(name = "mlir_tutorial")
 
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
@@ -18,7 +18,9 @@ http_archive(
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 
 bazel_skylib_workspace()
+
 load("@bazel_skylib//lib:versions.bzl", "versions")
+
 versions.check(minimum_bazel_version = "6.3.2")
 
 # A two-step process for buliding LLVM/MLIR with bazel. First the raw source
@@ -108,3 +110,122 @@ pip_parse(
 load("@mlir_tutorial_pip_deps//:requirements.bzl", "install_deps")
 
 install_deps()
+
+##### Deps for or-tools #####
+
+## Bazel rules.
+git_repository(
+    name = "platforms",
+    commit = "380c85cc2c7b126c6e354f517dc16d89fe760c9f",
+    remote = "https://github.com/bazelbuild/platforms.git",
+)
+
+git_repository(
+    name = "rules_proto",
+    commit = "3f1ab99b718e3e7dd86ebdc49c580aa6a126b1cd",
+    remote = "https://github.com/bazelbuild/rules_proto.git",
+)
+
+## ZLIB
+new_git_repository(
+    name = "zlib",
+    build_file = "@com_google_protobuf//:third_party/zlib.BUILD",
+    commit = "04f42ceca40f73e2978b50e93806c2a18c1281fc",
+    remote = "https://github.com/madler/zlib.git",
+)
+
+## Re2
+git_repository(
+    name = "com_google_re2",
+    remote = "https://github.com/google/re2.git",
+    tag = "2023-07-01",
+)
+
+## Abseil-cpp
+git_repository(
+    name = "com_google_absl",
+    commit = "c2435f8342c2d0ed8101cb43adfd605fdc52dca2",
+    patch_args = ["-p1"],
+    patches = ["@com_google_ortools//patches:abseil-cpp-20230125.3.patch"],
+    remote = "https://github.com/abseil/abseil-cpp.git",
+)
+
+## Protobuf
+git_repository(
+    name = "com_google_protobuf",
+    # there's a patch for the CMake build in protobuf, ignoring
+    # patches = ["@com_google_ortools//patches:protobuf-v23.3.patch"],
+    commit = "4dd15db6eb3955745f379d28fb4a2fcfb6753de3",
+    patch_args = ["-p1"],
+    remote = "https://github.com/protocolbuffers/protobuf.git",
+)
+
+# Load common dependencies.
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+## Solvers
+http_archive(
+    name = "glpk",
+    build_file = "@com_google_ortools//bazel:glpk.BUILD",
+    sha256 = "4a1013eebb50f728fc601bdd833b0b2870333c3b3e5a816eeba921d95bec6f15",
+    url = "http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
+)
+
+http_archive(
+    name = "bliss",
+    build_file = "@com_google_ortools//bazel:bliss.BUILD",
+    patches = ["@com_google_ortools//bazel:bliss-0.73.patch"],
+    sha256 = "f57bf32804140cad58b1240b804e0dbd68f7e6bf67eba8e0c0fa3a62fd7f0f84",
+    url = "https://github.com/google/or-tools/releases/download/v9.0/bliss-0.73.zip",
+    #url = "http://www.tcs.hut.fi/Software/bliss/bliss-0.73.zip",
+)
+
+new_git_repository(
+    name = "scip",
+    build_file = "@com_google_ortools//bazel:scip.BUILD",
+    commit = "62fab8a2e3708f3452fad473a6f48715c367316b",
+    patch_args = ["-p1"],
+    patches = ["@com_google_ortools//bazel:scip.patch"],
+    remote = "https://github.com/scipopt/scip.git",
+)
+
+# Eigen has no Bazel build.
+new_git_repository(
+    name = "eigen",
+    build_file_content =
+        """
+cc_library(
+    name = 'eigen3',
+    srcs = [],
+    includes = ['.'],
+    hdrs = glob(['Eigen/**']),
+    visibility = ['//visibility:public'],
+)
+""",
+    commit = "3147391d946bb4b6c68edd901f2add6ac1f31f8c",
+    remote = "https://gitlab.com/libeigen/eigen.git",
+)
+
+git_repository(
+    name = "highs",
+    branch = "bazel",
+    remote = "https://github.com/ERGO-Code/HiGHS.git",
+)
+
+## Swig support
+# pcre source code repository
+new_git_repository(
+    name = "pcre2",
+    build_file = "@com_google_ortools//bazel:pcre2.BUILD",
+    remote = "https://github.com/PCRE2Project/pcre2.git",
+    tag = "pcre2-10.42",
+)
+
+git_repository(
+    name = "com_google_ortools",
+    commit = "1d696f9108a0ebfd99feb73b9211e2f5a6b0812b",
+    remote = "https://github.com/google/or-tools.git",
+    shallow_since = "1647023481 +0100",
+)
