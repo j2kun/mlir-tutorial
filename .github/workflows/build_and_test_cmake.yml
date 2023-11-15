@@ -29,6 +29,14 @@ jobs:
             ./externals/llvm-project
           key: ${{ runner.os }}-cmake-${{ hashFiles('bazel/import_llvm.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
 
+      - name: Cache mlir-tutorial build
+        id: cache-mlir-tutorial
+        uses: actions/cache@v3
+        with:
+          path: |
+            ./build
+          key: ${{ runner.os }}-cmake-${{ hashFiles('bazel/import_llvm.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
+
       - name: Git config
         run: |
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
@@ -47,9 +55,10 @@ jobs:
       - name: Build and test mlir-tutorial
         run: |
           mkdir build && cd build
-          cmake -DLLVM_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/mlir ..
+          cmake -DLLVM_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/mlir -DBUILD_DEPS="ON" ..
           cmake --build . --target MLIRAffineFullUnrollPasses
           cmake --build . --target MLIRMulToAddPasses
+          cmake --build . --target MLIRNoisyPasses
           cmake --build . --target mlir-headers
           cmake --build . --target tutorial-opt
           cmake --build . --target check-mlir-tutorial
