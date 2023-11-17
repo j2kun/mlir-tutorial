@@ -47,6 +47,7 @@ jobs:
           LLVM_COMMIT=$(grep LLVM_COMMIT ${GITHUB_WORKSPACE}/bazel/import_llvm.bzl | head -n 1 | cut -d'"' -f 2 )
           git submodule update --init --recursive
           cd externals/llvm-project
+          git fetch
           git checkout ${LLVM_COMMIT}
           mkdir build && cd build
           cmake -G Ninja ../llvm -DLLVM_ENABLE_PROJECTS=mlir -DLLVM_BUILD_EXAMPLES=ON -DLLVM_ENABLE_ASSERTIONS=ON -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_RTTI=ON -DLLVM_TARGETS_TO_BUILD="host"
@@ -54,7 +55,7 @@ jobs:
 
       - name: Build and test mlir-tutorial
         run: |
-          mkdir build && cd build
+          mkdir build-cmake && cd build-cmake
           cmake -DLLVM_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/mlir -DBUILD_DEPS="ON" ..
           cmake --build . --target MLIRAffineFullUnrollPasses
           cmake --build . --target MLIRMulToAddPasses
