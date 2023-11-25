@@ -132,6 +132,7 @@ cmake -G $BUILD_SYSTEM .. \
     -DLLVM_DIR="$LLVM_BUILD_DIR/lib/cmake/llvm" \
     -DMLIR_DIR="$LLVM_BUILD_DIR/lib/cmake/mlir" \
     -DBUILD_DEPS="ON" \
+    -DBUILD_SHARED_LIBS="OFF" \
     -DCMAKE_BUILD_TYPE=Debug
 
 popd
