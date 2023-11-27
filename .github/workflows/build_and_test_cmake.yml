@@ -55,7 +55,7 @@ jobs:
       - name: Build and test mlir-tutorial
         run: |
           mkdir build && cd build
-          cmake -DLLVM_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/mlir -DBUILD_DEPS="ON" ..
+          cmake -DLLVM_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/llvm -DMLIR_DIR=${GITHUB_WORKSPACE}/externals/llvm-project/build/lib/cmake/mlir -DBUILD_DEPS="ON" -DBUILD_SHARED_LIBS="OFF" ..
           cmake --build . --target MLIRAffineFullUnrollPasses
           cmake --build . --target MLIRMulToAddPasses
           cmake --build . --target MLIRNoisyPasses
