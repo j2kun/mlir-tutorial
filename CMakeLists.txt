@@ -4,6 +4,7 @@ project(mlir-tutorial LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17 CACHE STRING "C++ standard to conform to")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(BUILD_DEPS ON)
 
 find_package(MLIR REQUIRED CONFIG)
 
@@ -28,7 +29,7 @@ include(FetchContent)
 FetchContent_Declare(
   or-tools
   GIT_REPOSITORY https://github.com/google/or-tools.git
-  GIT_TAG        main
+  GIT_TAG        v9.0
 )
 FetchContent_MakeAvailable(or-tools)
 message(STATUS "Done fetching or-tools")
