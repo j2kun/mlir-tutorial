@@ -1,4 +1,5 @@
-add_mlir_library(AffineFullUnroll
+add_mlir_library(AffinePasses
+    AffineAnalysisDebug.cpp
     AffineFullUnroll.cpp
     AffineFullUnrollPatternRewrite.cpp
 
@@ -6,12 +7,12 @@ add_mlir_library(AffineFullUnroll
     ADDITIONAL_HEADER_DIRS
 
     DEPENDS
-    MLIRAffineFullUnrollPasses
+    MLIRAffinePasses
 
     LINK_LIBS PUBLIC
 )
 
 set(LLVM_TARGET_DEFINITIONS Passes.td)
 mlir_tablegen(Passes.h.inc -gen-pass-decls -name Affine)
-add_public_tablegen_target(MLIRAffineFullUnrollPasses)
+add_public_tablegen_target(MLIRAffinePasses)
 add_mlir_doc(Passes AffinePasses ./ -gen-pass-doc)

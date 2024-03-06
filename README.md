@@ -137,7 +137,7 @@ cmake -G $BUILD_SYSTEM .. \
 
 popd
 
-cmake --build $BUILD_DIR --target MLIRAffineFullUnrollPasses
+cmake --build $BUILD_DIR --target MLIRAffinePasses
 cmake --build $BUILD_DIR --target MLIRMulToAddPasses
 cmake --build $BUILD_DIR --target MLIRNoisyPasses
 cmake --build $BUILD_DIR --target mlir-headers

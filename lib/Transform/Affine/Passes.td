@@ -19,4 +19,9 @@ def AffineFullUnrollPatternRewrite : Pass<"affine-full-unroll-rewrite"> {
   let dependentDialects = ["mlir::affine::AffineDialect"];
 }
 
+def AffineAnalysisDebug : Pass<"affine-analysis-debug"> {
+  let summary = "Print out information provided by affine analysis";
+  let dependentDialects = ["mlir::affine::AffineDialect"];
+}
+
 #endif  // LIB_TRANSFORM_AFFINE_PASSES_TD_
