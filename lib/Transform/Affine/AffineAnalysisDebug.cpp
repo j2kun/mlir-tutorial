@@ -14,7 +14,12 @@ struct AffineAnalysisDebug : impl::AffineAnalysisDebugBase<AffineAnalysisDebug> 
   using AffineAnalysisDebugBase::AffineAnalysisDebugBase;
 
   void runOnOperation() {
-    getOperation()->emitError("shell");
+    getOperation()->walk([](AffineForOp forOp) {
+      forOp.dump();
+
+      // Get the affine analysis
+      auto *affineAnalysis = forOp->getParentOfType<ModuleOp>().getAnalysis<AffineAnalysis>();
+    });
   }
 };
 
