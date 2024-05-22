@@ -1,5 +1,9 @@
 common --action_env=BAZEL_CXXOPTS=-std=c++17
 common --cxxopt='-std=c++17'
+build:macos --apple_platform_type=macos
+build:macos --macos_minimum_os=10.13
+build:macos --macos_sdk_version=10.13
+build:macos_arm64 --cpu=darwin_arm64
 common --copt=-fdiagnostics-color=always
 common --test_output=errors
 common -c dbg
