@@ -31,7 +31,7 @@ OpFoldResult MulOp::fold(MulOp::FoldAdaptor adaptor) {
 
   if (!lhs || !rhs) return nullptr;
 
-  auto degree = getResult().getType().cast<PolynomialType>().getDegreeBound();
+  auto degree = llvm::cast<PolynomialType>(getResult().getType()).getDegreeBound();
   auto maxIndex = lhs.size() + rhs.size() - 1;
 
   SmallVector<APInt, 8> result;
@@ -68,7 +68,7 @@ OpFoldResult FromTensorOp::fold(FromTensorOp::FoldAdaptor adaptor) {
 LogicalResult EvalOp::verify() {
   auto pointTy = getPoint().getType();
   bool isSignlessInteger = pointTy.isSignlessInteger(32);
-  auto complexPt = llvm::dyn_cast<ComplexType>(pointTy);
+  auto complexPt = dyn_cast<ComplexType>(pointTy);
   return isSignlessInteger || complexPt ? success()
                                         : emitOpError(
                                               "argument point must be a 32-bit "

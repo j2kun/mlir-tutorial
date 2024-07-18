@@ -13,7 +13,7 @@ include "mlir/Interfaces/SideEffectInterfaces.td"
 class Noisy_BinOp<string mnemonic> : Op<Noisy_Dialect, mnemonic, [
     Pure,
     SameOperandsAndResultType,
-    DeclareOpInterfaceMethods<InferIntRangeInterface>
+    DeclareOpInterfaceMethods<InferIntRangeInterface, ["inferResultRanges"]>
 ]> {
   let arguments = (ins Noisy_I32:$lhs, Noisy_I32:$rhs);
   let results = (outs Noisy_I32:$output);
@@ -33,7 +33,7 @@ def Noisy_MulOp : Noisy_BinOp<"mul"> {
 }
 
 def Noisy_EncodeOp : Op<Noisy_Dialect, "encode", [
-    Pure, DeclareOpInterfaceMethods<InferIntRangeInterface>]> {
+    Pure, DeclareOpInterfaceMethods<InferIntRangeInterface, ["inferResultRanges"]>]> {
   let summary = "Encodes a noisy i32 from a small-width integer, injecting 12 bits of noise.";
   let arguments = (ins AnyIntOfWidths<[1, 2, 3, 4, 5]>:$input);
   let results = (outs Noisy_I32:$output);
@@ -48,7 +48,7 @@ def Noisy_DecodeOp : Op<Noisy_Dialect, "decode", [Pure]> {
 }
 
 def Noisy_ReduceNoiseOp : Op<Noisy_Dialect, "reduce_noise", [
-    Pure, SameOperandsAndResultType,  DeclareOpInterfaceMethods<InferIntRangeInterface>]> {
+    Pure, SameOperandsAndResultType,  DeclareOpInterfaceMethods<InferIntRangeInterface, ["inferResultRanges"]>]> {
   let summary = "Reduces the noise in a noisy integer to a fixed noise level. Expensive!";
   let arguments = (ins Noisy_I32:$input);
   let results = (outs Noisy_I32:$output);

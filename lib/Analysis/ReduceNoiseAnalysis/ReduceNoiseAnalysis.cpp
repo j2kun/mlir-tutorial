@@ -42,7 +42,7 @@ ReduceNoiseAnalysis::ReduceNoiseAnalysis(Operation *op) {
   op->walk([&](Operation *op) {
     // FIXME: assumes all reduce_noise ops have already been removed and their
     // values forwarded.
-    if (!llvm::isa<noisy::AddOp, noisy::SubOp, noisy::MulOp>(op)) {
+    if (!isa<noisy::AddOp, noisy::SubOp, noisy::MulOp>(op)) {
       return;
     }
 
@@ -81,8 +81,8 @@ ReduceNoiseAnalysis::ReduceNoiseAnalysis(Operation *op) {
     // In the tutorial, there is no control flow, so these are the function
     // arguments of the main function being analyzed. A real compiler would
     // need to handle this more generically.
-    if (value.isa<BlockArgument>() ||
-        llvm::isa<noisy::EncodeOp>(value.getDefiningOp())) {
+    if (isa<BlockArgument>(value) ||
+        isa<noisy::EncodeOp>(value.getDefiningOp())) {
       MPConstraint *const ct =
           solver->MakeRowConstraint(INITIAL_NOISE, INITIAL_NOISE, "");
       ct->SetCoefficient(var, 1);
