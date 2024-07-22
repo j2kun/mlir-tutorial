@@ -6,8 +6,11 @@ Constraint IsPowerOfTwo(attr: Attr) [{
 }];
 
 // Currently, constraints that return values must be defined in C++
-Constraint Halve(attr: Attr) -> Attr;
+Constraint Halve(atttr: Attr) -> Attr;
+Constraint MinusOne(attr: Attr) -> Attr;
 
+// Replace y = C*x with y = C/2*x + C/2*x, when C is a power of 2, otherwise do
+// nothing.
 Pattern PowerOfTwoExpandRhs with benefit(2) {
   let root = op<arith.muli>(op<arith.constant> {value = const: Attr}, rhs: Value);
   IsPowerOfTwo(const);
@@ -30,6 +33,35 @@ Pattern PowerOfTwoExpandLhs with benefit(2) {
     let newConst = op<arith.constant> {value = halved};
     let newMul = op<arith.muli>(lhs, newConst);
     let newAdd = op<arith.addi>(newMul, newMul);
+    replace root with newAdd;
+  };
+}
+
+// Replace y = 9*x with y = 8*x + x
+Pattern PeelFromMulRhs with benefit(1) {
+  let root = op<arith.muli>(lhs: Value, op<arith.constant> {value = const: Attr});
+
+  // We are guaranteed `value` is not a power of two, because the greedy
+  // rewrite engine ensures the PowerOfTwoExpand pattern is run first, since
+  // it has higher benefit.
+  let minusOne: Attr = MinusOne(const);
+
+  rewrite root with {
+    let newConst = op<arith.constant> {value = minusOne};
+    let newMul = op<arith.muli>(lhs, newConst);
+    let newAdd = op<arith.addi>(newMul, lhs);
+    replace root with newAdd;
+  };
+}
+
+Pattern PeelFromMulLhs with benefit(1) {
+  let root = op<arith.muli>(op<arith.constant> {value = const: Attr}, rhs: Value);
+  let minusOne: Attr = MinusOne(const);
+
+  rewrite root with {
+    let newConst = op<arith.constant> {value = minusOne};
+    let newMul = op<arith.muli>(newConst, rhs);
+    let newAdd = op<arith.addi>(newMul, rhs);
     replace root with newAdd;
   };
 }
