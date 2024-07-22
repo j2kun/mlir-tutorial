@@ -8,7 +8,7 @@ Constraint IsPowerOfTwo(attr: Attr) [{
 // Currently, constraints that return values must be defined in C++
 Constraint Halve(attr: Attr) -> Attr;
 
-Pattern PowerOfTwoExpand with benefit(2) {
+Pattern PowerOfTwoExpandRhs with benefit(2) {
   let root = op<arith.muli>(op<arith.constant> {value = const: Attr}, rhs: Value);
   IsPowerOfTwo(const);
   let halved: Attr = Halve(const);
@@ -16,6 +16,19 @@ Pattern PowerOfTwoExpand with benefit(2) {
   rewrite root with {
     let newConst = op<arith.constant> {value = halved};
     let newMul = op<arith.muli>(newConst, rhs);
+    let newAdd = op<arith.addi>(newMul, newMul);
+    replace root with newAdd;
+  };
+}
+
+Pattern PowerOfTwoExpandLhs with benefit(2) {
+  let root = op<arith.muli>(lhs: Value, op<arith.constant> {value = const: Attr});
+  IsPowerOfTwo(const);
+  let halved: Attr = Halve(const);
+
+  rewrite root with {
+    let newConst = op<arith.constant> {value = halved};
+    let newMul = op<arith.muli>(lhs, newConst);
     let newAdd = op<arith.addi>(newMul, newMul);
     replace root with newAdd;
   };
