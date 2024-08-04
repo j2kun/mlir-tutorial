@@ -17,6 +17,7 @@ This is the code repository for a series of articles on the
 10. [Dialect Conversion](https://jeremykun.com/2023/10/23/mlir-dialect-conversion/)
 11. [Lowering through LLVM](https://jeremykun.com/2023/11/01/mlir-lowering-through-llvm/)
 12. [A Global Optimization and Dataflow Analysis](https://jeremykun.com/2023/11/15/mlir-a-global-optimization-and-dataflow-analysis/)
+12. [Defining Patterns with PDLL](https://www.jeremykun.com/2024/08/04/mlir-pdll/)
 
 ## Bazel build
 
