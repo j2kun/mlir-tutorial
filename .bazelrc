@@ -1,5 +1,6 @@
 common --action_env=BAZEL_CXXOPTS=-std=c++17
 common --cxxopt='-std=c++17'
+common --deleted_packages=externals
 build:macos --apple_platform_type=macos
 build:macos --macos_minimum_os=10.13
 build:macos --macos_sdk_version=10.13
