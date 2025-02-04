@@ -13,7 +13,7 @@ filegroup(
         "@llvm-project//llvm:count",
         "@llvm-project//llvm:llc",
         "@llvm-project//llvm:not",
-        "@llvm-project//mlir:mlir-cpu-runner",
+        "@llvm-project//mlir:mlir-runner",
         "@llvm-project//mlir:mlir-opt",
         "@llvm-project//mlir:mlir-translate",
         "@mlir_tutorial_pip_deps_lit//:pkg",

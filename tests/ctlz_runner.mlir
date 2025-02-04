@@ -5,7 +5,7 @@
 // RUN:      convert-func-to-llvm, \
 // RUN:      convert-cf-to-llvm, \
 // RUN:      reconcile-unrealized-casts)" \
-// RUN: | mlir-cpu-runner -e test_7i32_to_29 -entry-point-result=i32 > %t
+// RUN: | mlir-runner -e test_7i32_to_29 -entry-point-result=i32 > %t
 // RUN: FileCheck %s --check-prefix=CHECK_TEST_7i32_TO_29 < %t
 
 func.func @test_7i32_to_29() -> i32 {
@@ -23,7 +23,7 @@ func.func @test_7i32_to_29() -> i32 {
 // RUN:      convert-func-to-llvm, \
 // RUN:      convert-cf-to-llvm, \
 // RUN:      reconcile-unrealized-casts)" \
-// RUN: | mlir-cpu-runner -e test_7i64_to_61 -entry-point-result=i64 > %t
+// RUN: | mlir-runner -e test_7i64_to_61 -entry-point-result=i64 > %t
 // RUN:  FileCheck %s --check-prefix=CHECK_TEST_7i64_TO_61 < %t
 func.func @test_7i64_to_61() -> i64 {
   %arg = arith.constant 7 : i64
