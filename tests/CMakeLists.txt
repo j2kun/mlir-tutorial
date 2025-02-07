@@ -8,7 +8,7 @@ configure_lit_site_cfg(
 set (MLIR_TUTORIAL_TEST_DEPENDS
     FileCheck count not
     mlir-opt
-    mlir-cpu-runner
+    mlir-runner
     # tutorial-opt
 )
 
