@@ -8,8 +8,8 @@ cc_library(
     hdrs = ["ReduceNoiseAnalysis.h"],
     deps = [
         "//lib/Dialect/Noisy",
-        "@com_google_ortools//ortools/base",
-        "@com_google_ortools//ortools/linear_solver",
+        "@or-tools//ortools/base",
+        "@or-tools//ortools/linear_solver",
         "@llvm-project//llvm:Support",
         "@llvm-project//mlir:IR",
     ],

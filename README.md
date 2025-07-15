@@ -30,6 +30,11 @@ the tutorial series and explained in the first article,
 The CMake build is maintained, but was added at article 10 (Dialect Conversion)
 and will not be explained in the articles.
 
+**Note**: This project has been upgraded to Bazel 8.3.1 and migrated to use 
+Bzlmod for dependency management, replacing the traditional WORKSPACE file 
+approach. Dependencies are now managed through `MODULE.bazel` using the 
+Bazel Central Registry (BCR) where possible.
+
 ### Prerequisites
 
 Install Bazelisk via instructions at
@@ -39,6 +44,9 @@ This should create the `bazel` command on your system.
 You should also have a modern C++ compiler on your system, either `gcc` or
 `clang`, which Bazel will detect.
 
+**Bazel Version**: This project requires Bazel 8.3.1 or newer. The specific
+version is pinned in `.bazelversion`.
+
 ### Build and test
 
 Run
@@ -47,6 +55,19 @@ Run
 bazel build ...:all
 bazel test ...:all
 ```
+
+### Dependency Management
+
+The project uses Bzlmod (MODULE.bazel) for dependency management:
+
+- **Core dependencies**: Managed through Bazel Central Registry (BCR)
+  - rules_python, rules_java, protobuf, abseil-cpp, or-tools, etc.
+- **LLVM dependencies**: Managed through custom module extension
+  - LLVM/MLIR source code via git repository
+- **Development tools**: hedron_compile_commands via git_override
+
+This approach provides better dependency resolution, versioning, and 
+compatibility compared to the legacy WORKSPACE approach.
 
 ## CMake build
 
