@@ -16,7 +16,7 @@ filegroup(
         "@llvm-project//mlir:mlir-runner",
         "@llvm-project//mlir:mlir-opt",
         "@llvm-project//mlir:mlir-translate",
-        "@mlir_tutorial_pip_deps_lit//:pkg",
+        "@mlir_tutorial_pip_deps//lit",
     ],
 )
 

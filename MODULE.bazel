@@ -11,7 +11,7 @@ module(
     repo_name = "mlir_tutorial",
 )
 
-# Core Bazel dependencies that are available in BCR
+# Dependencies available in BCR
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "rules_python", version = "1.2.0")
 bazel_dep(name = "platforms", version = "0.0.11")
@@ -20,8 +20,6 @@ bazel_dep(name = "rules_java", version = "8.12.0")
 bazel_dep(name = "protobuf", version = "30.1")
 bazel_dep(name = "rules_proto", version = "7.1.0")
 bazel_dep(name = "rules_pkg", version = "1.1.0")
-
-# External dependencies available in BCR
 bazel_dep(name = "re2", version = "2024-07-02.bcr.1")
 bazel_dep(name = "abseil-cpp", version = "20250512.1")
 bazel_dep(name = "or-tools", version = "9.12")
@@ -58,13 +56,13 @@ llvm_configure(name = "llvm-project")
 
 # Configure Python dependencies
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
-python.toolchain(python_version = "3.10")
-use_repo(python, "python_3_10")
+python.toolchain(python_version = "3.13")
+use_repo(python, "python_3_13")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
     hub_name = "mlir_tutorial_pip_deps",
-    python_version = "3.10",
+    python_version = "3.13",
     requirements_lock = "//:requirements.txt",
 )
 use_repo(pip, "mlir_tutorial_pip_deps") 
