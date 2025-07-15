@@ -3,7 +3,7 @@ common --enable_bzlmod
 
 # Original configurations
 common --action_env=BAZEL_CXXOPTS=-std=c++17
-build --action_env=CCACHE_DISABLE=1
+common --action_env=CCACHE_DISABLE=1
 build --action_env=CC=/usr/bin/gcc
 build --action_env=CXX=/usr/bin/g++
 common --cxxopt='-std=c++17'
