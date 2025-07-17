@@ -10,7 +10,7 @@ include "mlir/Interfaces/SideEffectInterfaces.td"
 
 // Type constraint for poly binop arguments: polys, vectors of polys, or
 // tensors of polys.
-def PolyOrContainer : TypeOrContainer<Polynomial, "poly-or-container">;
+def PolyOrContainer : TypeOrValueSemanticsContainer<Polynomial, "poly-or-container">;
 
 // Inject verification that all integer-like arguments are 32-bits
 def Has32BitArguments : NativeOpTrait<"Has32BitArguments"> {

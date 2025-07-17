@@ -42,7 +42,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   // Needed to lower memref.subview
   manager.addPass(mlir::memref::createExpandStridedMetadataPass());
 
-  manager.addPass(mlir::createConvertSCFToCFPass());
+  manager.addPass(mlir::createSCFToControlFlowPass());
   manager.addPass(mlir::createConvertControlFlowToLLVMPass());
   manager.addPass(mlir::createArithToLLVMConversionPass());
   manager.addPass(mlir::createConvertFuncToLLVMPass());
