@@ -19,10 +19,10 @@ jobs:
         with:
           path: |
             ~/.cache/bazel
-          # add import_llvm.bzl so that a new build occurs after an LLVM commit hash update
-          key: ${{ runner.os }}-bazel-${{ hashFiles('bazel/import_llvm.bzl') }}-${{ hashFiles('.bazelversion', '.bazelrc', 'WORKSPACE') }}
+          # add extensions.bzl so that a new build occurs after an LLVM commit hash update
+          key: ${{ runner.os }}-bazel-${{ hashFiles('extensions.bzl') }}-${{ hashFiles('.bazelversion', '.bazelrc', 'MODULE.bazel') }}
           restore-keys: |
-            ${{ runner.os }}-bazel-${{ hashFiles('bazel/import_llvm.bzl') }}
+            ${{ runner.os }}-bazel-${{ hashFiles('extensions.bzl') }}
 
       - name: "Run `bazel build`"
         run: |
