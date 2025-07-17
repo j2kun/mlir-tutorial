@@ -29,7 +29,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
 
   // One-shot bufferize, from
   // https://mlir.llvm.org/docs/Bufferization/#ownership-based-buffer-deallocation
-  mlir::bufferization::OneShotBufferizationOptions bufferizationOptions;
+  mlir::bufferization::OneShotBufferizePassOptions bufferizationOptions;
   bufferizationOptions.bufferizeFunctionBoundaries = true;
   manager.addPass(
       mlir::bufferization::createOneShotBufferizePass(bufferizationOptions));
