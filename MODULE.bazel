@@ -50,8 +50,6 @@ use_repo(mlir_tutorial_deps,
     "llvm_zlib"
 )
 
-# Configure LLVM project using use_repo_rule
-llvm_configure = use_repo_rule("@llvm-raw//utils/bazel:configure.bzl", "llvm_configure")
 llvm_configure(name = "llvm-project")
 
 # Configure Python dependencies
