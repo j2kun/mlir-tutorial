@@ -11,7 +11,7 @@ def _mlir_tutorial_deps_impl(module_ctx):
     new_git_repository(
         name = "llvm-raw",
         build_file_content = "# empty",
-        commit = "e8a891b0f9d2a742ac3904116aaec2c7c9231b24",
+        commit = "d9190f8141661bd6120dea61d28ae8940fd775d0",
         init_submodules = False,
         remote = "https://github.com/llvm/llvm-project.git",
     )
