@@ -50,9 +50,26 @@ use_repo(mlir_tutorial_deps,
     "llvm_zlib"
 )
 
+# The subset of LLVM backend targets that should be compiled
+_LLVM_TARGETS = [
+    "X86",
+    # The bazel dependency graph for mlir-opt fails to load (at the analysis
+    # step) without the NVPTX target in this list, because mlir/test:TestGPU
+    # depends on the //llvm:NVPTXCodeGen target, which is not defined unless this
+    # is included. @j2kun asked the LLVM maintiners for tips on how to fix this,
+    # see https://github.com/llvm/llvm-project/issues/63135
+    "NVPTX",
+    # Needed for Apple M1 targets, see
+    # https://github.com/j2kun/mlir-tutorial/issues/11
+    "AArch64",
+]
+
 # Configure LLVM project using use_repo_rule
 llvm_configure = use_repo_rule("@llvm-raw//utils/bazel:configure.bzl", "llvm_configure")
-llvm_configure(name = "llvm-project")
+llvm_configure(
+    name = "llvm-project",
+    targets = _LLVM_TARGETS,
+)
 
 # Configure Python dependencies
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
