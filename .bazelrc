@@ -1,3 +1,4 @@
+common --enable_bzlmod
 common --action_env=BAZEL_CXXOPTS=-std=c++17
 common --cxxopt='-std=c++17'
 common --deleted_packages=externals

@@ -3,6 +3,7 @@ bazel-bin
 bazel-mlir-tutorial
 bazel-out
 bazel-testlogs
+MODULE.bazel.lock
 
 # cmake related files
 # ignore the user specified CMake presets in subproject directories.

@@ -12,7 +12,7 @@ config.suffixes = [".mlir"]
 
 # lit executes relative to the directory
 #
-#   bazel-bin/tests/<test_target_name>.runfiles/mlir_tutorial/
+#   bazel-bin/tests/<test_target_name>.runfiles/_main/
 #
 # which contains all the binary targets included in via the `data` attribute in
 # the lit.bzl macro, which in turn gets them from the filegroup //tests:test_utilities.
@@ -25,14 +25,16 @@ config.suffixes = [".mlir"]
 #   print(subprocess.run(["ls", "-l", os.environ["RUNFILES_DIR"]]).stdout)
 #   print(subprocess.run([ "env", ]).stdout)
 #
-# Bazel defines RUNFILES_DIR which includes mlir_tutorial/ and third party
+# Bazel defines RUNFILES_DIR which includes _main/ and third party
 # dependencies as their own directory. Generally, it seems that $PWD ==
-# $RUNFILES_DIR/mlir_tutorial/
+# $RUNFILES_DIR/_main/
 runfiles_dir = Path(os.environ["RUNFILES_DIR"])
+
+# Fix tool paths to use _main instead of mlir_tutorial
 tool_relpaths = [
-    "llvm-project/mlir",
-    "llvm-project/llvm",
-    "mlir_tutorial/tools",
+    "+_repo_rules+llvm-project/mlir",
+    "+_repo_rules+llvm-project/llvm", 
+    "_main/tools",
 ]
 
 config.environment["PATH"] = (
@@ -42,6 +44,6 @@ config.environment["PATH"] = (
 )
 
 substitutions = {
-    "%project_source_dir": str(runfiles_dir.joinpath(Path('mlir_tutorial'))),
+    "%project_source_dir": str(runfiles_dir.joinpath(Path('_main'))),
 }
 config.substitutions.extend(substitutions.items())

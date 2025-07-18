@@ -1,0 +1,85 @@
+###############################################################################
+# Bazel now uses Bzlmod by default to manage external dependencies.
+# Please consider migrating your external dependencies from WORKSPACE to MODULE.bazel.
+#
+# For more details, please check https://github.com/bazelbuild/bazel/issues/18958
+###############################################################################
+
+module(
+    name = "mlir_tutorial",
+    version = "1.0.0",
+    repo_name = "mlir_tutorial",
+)
+
+# Dependencies available in BCR
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "rules_python", version = "1.2.0")
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "rules_cc", version = "0.1.1")
+bazel_dep(name = "rules_java", version = "8.12.0")
+bazel_dep(name = "protobuf", version = "30.1")
+bazel_dep(name = "rules_proto", version = "7.1.0")
+bazel_dep(name = "rules_pkg", version = "1.1.0")
+bazel_dep(name = "re2", version = "2024-07-02.bcr.1")
+bazel_dep(name = "abseil-cpp", version = "20250512.1")
+bazel_dep(name = "or-tools", version = "9.12")
+bazel_dep(name = "eigen", version = "4.0.0-20241125.bcr.2")
+bazel_dep(name = "highs", version = "1.11.0")
+bazel_dep(name = "pcre2", version = "10.46-DEV")
+bazel_dep(name = "glpk", version = "5.0.bcr.4")
+bazel_dep(name = "bliss", version = "0.73")
+bazel_dep(name = "scip", version = "9.2.0.bcr.3")
+bazel_dep(name = "zlib-ng", version = "2.0.7")
+
+# Hedron's Compile Commands Extractor for Bazel
+# https://github.com/hedronvision/bazel-compile-commands-extractor
+bazel_dep(name = "hedron_compile_commands", dev_dependency = True)
+git_override(
+    module_name = "hedron_compile_commands",
+    remote = "https://github.com/hedronvision/bazel-compile-commands-extractor.git",
+    commit = "0e990032f3c5a866e72615cf67e5ce22186dcb97",
+    # Replace the commit hash (above) with the latest (https://github.com/hedronvision/bazel-compile-commands-extractor/commits/main).
+    # Even better, set up Renovate and let it do the work for you (see "Suggestion: Updates" in the README).
+)
+
+# Use module extensions for LLVM and other dependencies that aren't in BCR
+mlir_tutorial_deps = use_extension("//:extensions.bzl", "mlir_tutorial_deps")
+use_repo(mlir_tutorial_deps, 
+    "llvm-raw", 
+    "llvm_zstd", 
+    "llvm_zlib"
+)
+
+# The subset of LLVM backend targets that should be compiled
+_LLVM_TARGETS = [
+    "X86",
+    # The bazel dependency graph for mlir-opt fails to load (at the analysis
+    # step) without the NVPTX target in this list, because mlir/test:TestGPU
+    # depends on the //llvm:NVPTXCodeGen target, which is not defined unless this
+    # is included. @j2kun asked the LLVM maintiners for tips on how to fix this,
+    # see https://github.com/llvm/llvm-project/issues/63135
+    "NVPTX",
+    # Needed for Apple M1 targets, see
+    # https://github.com/j2kun/mlir-tutorial/issues/11
+    "AArch64",
+]
+
+# Configure LLVM project using use_repo_rule
+llvm_configure = use_repo_rule("@llvm-raw//utils/bazel:configure.bzl", "llvm_configure")
+llvm_configure(
+    name = "llvm-project",
+    targets = _LLVM_TARGETS,
+)
+
+# Configure Python dependencies
+python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+python.toolchain(python_version = "3.13")
+use_repo(python, "python_3_13")
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "mlir_tutorial_pip_deps",
+    python_version = "3.13",
+    requirements_lock = "//:requirements.txt",
+)
+use_repo(pip, "mlir_tutorial_pip_deps") 

@@ -27,7 +27,7 @@ jobs:
         with:
           path: |
             ./externals/llvm-project
-          key: ${{ runner.os }}-cmake-${{ hashFiles('bazel/import_llvm.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-cmake-${{ hashFiles('extensions.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
 
       - name: Cache mlir-tutorial build
         id: cache-mlir-tutorial
@@ -35,7 +35,7 @@ jobs:
         with:
           path: |
             ./build
-          key: ${{ runner.os }}-cmake-${{ hashFiles('bazel/import_llvm.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
+          key: ${{ runner.os }}-cmake-${{ hashFiles('extensions.bzl') }}-${{ hashFiles('**/CMakeLists.txt') }}
 
       - name: Git config
         run: |
@@ -44,7 +44,7 @@ jobs:
       - name: Build LLVM
         if: steps.cache-llvm.outputs.cache-hit != 'true'
         run: |
-          LLVM_COMMIT=$(grep LLVM_COMMIT ${GITHUB_WORKSPACE}/bazel/import_llvm.bzl | head -n 1 | cut -d'"' -f 2 )
+          LLVM_COMMIT=$(grep 'commit = ' ${GITHUB_WORKSPACE}/extensions.bzl | head -n 1 | cut -d'"' -f 2)
           git submodule update --init --recursive
           cd externals/llvm-project
           git checkout ${LLVM_COMMIT}

@@ -29,7 +29,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
 
   // One-shot bufferize, from
   // https://mlir.llvm.org/docs/Bufferization/#ownership-based-buffer-deallocation
-  mlir::bufferization::OneShotBufferizationOptions bufferizationOptions;
+  mlir::bufferization::OneShotBufferizePassOptions bufferizationOptions;
   bufferizationOptions.bufferizeFunctionBoundaries = true;
   manager.addPass(
       mlir::bufferization::createOneShotBufferizePass(bufferizationOptions));
@@ -42,7 +42,7 @@ void polyToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   // Needed to lower memref.subview
   manager.addPass(mlir::memref::createExpandStridedMetadataPass());
 
-  manager.addPass(mlir::createConvertSCFToCFPass());
+  manager.addPass(mlir::createSCFToControlFlowPass());
   manager.addPass(mlir::createConvertControlFlowToLLVMPass());
   manager.addPass(mlir::createArithToLLVMConversionPass());
   manager.addPass(mlir::createConvertFuncToLLVMPass());
